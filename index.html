@@ -332,7 +332,7 @@ document.getElementById("image").addEventListener("change",function(e){var f=e.t
 document.getElementById("productForm").addEventListener("submit",function(e){e.preventDefault();var name=document.getElementById("name").value.trim();var desc=document.getElementById("description").value.trim();var price=parseFloat(document.getElementById("price").value);var oldPrice=parseFloat(document.getElementById("oldPrice").value)||0;var brand=document.getElementById("brandSelect").value||document.getElementById("brand").value.trim()||"Yuya";var cat=document.getElementById("category").value;var sub=document.getElementById("subSelect").value||(cat==="Perfumes"?"Perfumes":cat==="Skincare"?"Cara":"Labiales");var stock=parseInt(document.getElementById("stockInput").value)||10;var img=document.getElementById("preview").src;if(!name||!price||!img){toast("Falta nombre, precio o foto 💗");return;}var np={id:Date.now(),name:name,brand:brand,description:desc,price:price,oldPrice:oldPrice||undefined,category:cat,sub:sub,stock:stock,image:img};customProducts.push(np);products.push(np);setStock(np.id,stock);save();updateCounts();if(currentBrand===brand)applyFilters();closeAddModal();e.target.reset();document.getElementById("preview").style.display="none";toast("Producto agregado 💗");});
 updateCounts();renderOrders();updateCartUI();if(user)updateWelcome();
 </script>
-  <!-- CONEXIÓN FIREBASE GLOWLAB - NO BORRAR -->
+  <!-- CONEXIÓN FIREBASE GLOWLAB - STOCK EN VIVO - NO BORRAR -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
@@ -348,9 +348,47 @@ updateCounts();renderOrders();updateCartUI();if(user)updateWelcome();
   };
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
-  db.ref('productos').on('value', (snapshot) => {
-    console.log('Productos en vivo:', snapshot.val());
+
+  // 1. Cuando Firebase cambia, cambiamos la tienda en todos los celulares
+  db.ref('stock').on('value', (snapshot) => {
+    const nube = snapshot.val();
+    if (nube) {
+      // Copiamos el stock de la nube a la tienda
+      stockMap = nube;
+      try{ localStorage.setItem("glow_stock", JSON.stringify(stockMap)); }catch(e){}
+      // Volvemos a dibujar los productos para que salga AGOTADO
+      if (typeof applyFilters === 'function') applyFilters();
+      if (typeof updateCounts === 'function') updateCounts();
+      if (typeof updateCartUI === 'function') updateCartUI();
+      console.log('Stock en vivo:', nube);
+    } else {
+      // Primera vez: subimos tu stock inicial (10 de cada uno)
+      let inicial = {};
+      initialProducts.forEach(p => { inicial[p.id] = p.stock || 10; });
+      db.ref('stock').set(inicial);
+    }
   });
+
+  // 2. Cuando TU cambias el stock en tu tienda, lo subimos a la nube
+  const setStockOriginal = setStock;
+  window.setStock = function(id, cantidad){
+    cantidad = Math.max(0, cantidad);
+    stockMap[id] = cantidad;
+    try{ localStorage.setItem("glow_stock", JSON.stringify(stockMap)); }catch(e){}
+    db.ref('stock/' + id).set(cantidad);
+  };
+
+  // 3. Cuando alguien CONFIRMA un pago, restamos en la nube para todos
+  const confirmarOriginal = window.confirmarPago;
+  // Lo guardamos para usarlo después de que se haga el pedido
+  window.restarStockEnNube = function(carrito){
+    carrito.forEach(item => {
+      db.ref('stock/' + item.id).transaction((actual) => {
+        if (actual === null) return 0;
+        return Math.max(0, actual - item.qty);
+      });
+    });
+  };
 </script>
 </body>
 </html>
