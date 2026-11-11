@@ -7,23 +7,36 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Playfair+Display:wght@600;700&family=Cinzel:wght@600&family=Quicksand:wght@700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--rosa:#FFD6E0;--lila:#EDE7FF;--cielo:#C9ECFF;--blanco:#FFFFFF;--neutro:#FAF8F7;--text:#3D2B2E;--muted:#9A7D82}
+:root{--rosa:#FFD6E0;--lila:#EDE7FF;--cielo:#C9ECFF;--blanco:#FFF;--neutro:#FAF8F7;--text:#3D2B2E;--muted:#9A7D82}
 body{font-family:'Outfit',sans-serif;background:var(--neutro);color:var(--text)}
 body.brand-open{overflow:hidden}
 button,input,select,textarea{font-family:inherit}
 .emoji3d-big{font-size:68px;animation:flota 2.8s ease-in-out infinite}
 @keyframes flota{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-#brandTransition{position:fixed;inset:0;z-index:180;display:none;align-items:center;justify-content:center;overflow:hidden;background:#1A0F0A;will-change:transform,opacity}
+.fly-img{position:fixed;z-index:9999;pointer-events:none;border-radius:18px;object-fit:cover;box-shadow:0 15px 30px rgba(0,0,0,.25);transition:all .75s cubic-bezier(.5,-0.1,.3,1)}
+@keyframes bumpBag{0%{transform:scale(1)}40%{transform:scale(1.25) rotate(-6deg)}70%{transform:scale(.92)}100%{transform:scale(1)}}
+.bag-bump{animation:bumpBag .45s ease!important}
+.pay-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;place-items:end center;z-index:160}
+.pay-modal.show{display:grid}
+.pay-sheet{background:#fff;width:100%;max-width:480px;border-radius:28px 28px 0 0;padding:22px 20px 26px;max-height:92vh;overflow:auto}
+.pay-sheet label{font-size:12px;font-weight:800;color:#B98A92;display:block;margin:12px 0 4px}
+.pay-sheet input,.pay-sheet textarea{width:100%;padding:13px;border:2px solid #F0E9E9;border-radius:14px}
+.pay-opt{display:flex;gap:8px;flex-wrap:wrap}
+.pay-chip{flex:1;min-width:100px;padding:12px 8px;border:2px solid #F0E9E9;border-radius:16px;background:#fff;cursor:pointer;font-weight:800;font-size:13px;text-align:center}
+.pay-chip.sel{border-color:#F28CA8;background:#FFF5F7;color:#D94F7A}
+.pay-chip.sel2{border-color:#8FD0FF;background:#F0F9FF;color:#2B4A5E}
+/* 1RA TRANSMISION - FOTO + BLUR + BRILLITOS */
+#brandTransition{position:fixed;inset:0;z-index:180;display:none;align-items:center;justify-content:center;overflow:hidden;background:#1A0F0A}
 #brandTransition.show{display:flex}
-#brandTransition img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform,filter;animation:enfoqueFluido 1.5s cubic-bezier(.22,.75,.3,1) forwards}
+#brandTransition img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:enfoqueFluido 1.5s cubic-bezier(.22,.75,.3,1) forwards}
 @keyframes enfoqueFluido{0%{transform:scale(1.28) translateY(8px);filter:blur(18px) brightness(1.3)}55%{transform:scale(1.1) translateY(0);filter:blur(4px) brightness(1.08)}100%{transform:scale(1.04);filter:blur(0) brightness(.95)}}
-.trans-overlay{position:absolute;inset:0;background:radial-gradient(circle at 50% 40%, rgba(255,215,130,.32), transparent 55%), linear-gradient(180deg, rgba(255,190,80,.15), rgba(0,0,0,.42) 75%)}
-.bokeh{position:absolute;border-radius:50%;background:radial-gradient(circle, rgba(255,235,180,.95), rgba(255,200,90,.2) 60%, transparent 70%);will-change:transform,opacity;animation:flotaBrillo 2.4s ease-in-out infinite}
+.trans-overlay{position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(255,215,130,.32),transparent 55%),linear-gradient(180deg,rgba(255,190,80,.15),rgba(0,0,0,.42) 75%)}
+.bokeh{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,235,180,.95),rgba(255,200,90,.2) 60%,transparent 70%);animation:flotaBrillo 2.4s ease-in-out infinite}
 @keyframes flotaBrillo{0%,100%{transform:translateY(0) scale(1);opacity:.55}50%{transform:translateY(-18px) scale(1.2);opacity:1}}
 .b1{width:26px;height:26px;left:12%;top:22%}.b2{width:44px;height:44px;left:78%;top:18%;animation-delay:.3s}.b3{width:18px;height:18px;left:68%;top:68%;animation-delay:.6s}.b4{width:34px;height:34px;left:18%;top:72%;animation-delay:.9s}.b5{width:14px;height:14px;left:48%;top:12%;animation-delay:.2s}.b6{width:52px;height:52px;left:42%;top:78%;animation-delay:1s}
-.trans-content{position:relative;text-align:center;color:#fff;padding:24px;will-change:transform,opacity,filter;animation:letrasFluido 1.5s cubic-bezier(.22,.8,.3,1) forwards}
+.trans-content{position:relative;text-align:center;color:#fff;padding:24px;animation:letrasFluido 1.5s cubic-bezier(.22,.8,.3,1) forwards}
 @keyframes letrasFluido{0%{transform:scale(.86) translateY(16px);opacity:0;filter:blur(12px)}45%{opacity:.9;filter:blur(3px)}100%{transform:scale(1.04) translateY(0);opacity:1;filter:blur(0)}}
-.trans-brand{line-height:.95;text-shadow:0 4px 40px rgba(255,210,120,.9), 0 2px 10px rgba(0,0,0,.4)}
+.trans-brand{line-height:.95;text-shadow:0 4px 40px rgba(255,210,120,.9),0 2px 10px rgba(0,0,0,.4)}
 .trans-brand.yuya{font-family:'Quicksand',sans-serif;font-weight:700;font-size:66px;text-transform:lowercase}
 .trans-brand.dior{font-family:'Playfair Display',serif;font-weight:700;font-size:64px;letter-spacing:14px;text-transform:uppercase}
 .trans-brand.vs{font-family:'Cinzel',serif;font-weight:600;font-size:36px;letter-spacing:2px;text-transform:uppercase;line-height:1.1}
@@ -32,6 +45,18 @@ button,input,select,textarea{font-family:inherit}
 .trans-sub{font-size:14px;font-weight:500;opacity:.92;letter-spacing:1px;text-shadow:0 2px 8px rgba(0,0,0,.5)}
 #brandTransition.salir{animation:salirTrans .45s cubic-bezier(.3,.7,.4,1) forwards}
 @keyframes salirTrans{to{opacity:0;transform:scale(1.04) translateY(-8px)}}
+/* 2DA TRANSMISION - TARJETITA BLANCA */
+#secondTransition{position:fixed;inset:0;z-index:185;display:none;align-items:center;justify-content:center;background:#FFF5F7;overflow:hidden}
+#secondTransition.show{display:flex}
+#secondTransition.yuya{background:#F28CA8}#secondTransition.dior{background:#111}#secondTransition.vs{background:#B01E4A}
+#secondTransition .second-card{background:#fff;border-radius:28px;padding:26px 30px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.25);animation:abrePagina .7s cubic-bezier(.22,.8,.3,1) both}
+@keyframes abrePagina{0%{transform:scale(.7) translateY(30px);opacity:0;filter:blur(8px)}100%{transform:scale(1) translateY(0);opacity:1;filter:blur(0)}}
+#secondTransition .second-logo{font-size:42px;line-height:1}
+#secondTransition.yuya .second-logo{font-family:'Quicksand',sans-serif;color:#F28CA8;text-transform:lowercase}
+#secondTransition.dior .second-logo{font-family:'Playfair Display',serif;letter-spacing:10px;color:#111;text-transform:uppercase}
+#secondTransition.vs .second-logo{font-family:'Cinzel',serif;color:#B01E4A;text-transform:uppercase;font-size:30px}
+#secondTransition.salir{animation:saleSegunda .4s ease forwards}
+@keyframes saleSegunda{to{opacity:0;transform:scale(1.05)}}
 #portada{position:fixed;inset:0;z-index:200;background:var(--neutro);display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;overflow:auto}
 #portada.hidden{display:none!important}
 .portada-box{max-width:360px;width:100%}
@@ -40,7 +65,8 @@ button,input,select,textarea{font-family:inherit}
 .portada-btn{width:100%;padding:18px;border:none;border-radius:999px;background:#F28CA8;color:#fff;font-weight:800;font-size:17px;cursor:pointer}
 .portada-btn2{width:100%;padding:14px;border-radius:999px;background:#fff;font-weight:700;cursor:pointer;margin-top:10px;border:1px solid #EDE7FF}
 .perfil-card{background:#fff;border-radius:20px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:10px;text-align:left;box-shadow:0 8px 20px rgba(0,0,0,.06)}
-.perfil-avatar{width:48px;height:48px;border-radius:16px;background:var(--lila);display:grid;place-items:center;font-size:24px}
+.perfil-avatar{width:48px;height:48px;border-radius:16px;background:var(--lila);display:grid;place-items:center;font-size:24px;overflow:hidden}
+.perfil-avatar img{width:100%;height:100%;object-fit:cover}
 .perfil-btn{padding:10px 14px;border:none;border-radius:999px;background:#F28CA8;color:#fff;font-weight:800;font-size:12px;cursor:pointer}
 .perfil-del{padding:10px;border:none;border-radius:999px;background:#FFF0F3;color:#D33;cursor:pointer}
 #registroBox{width:100%;max-width:340px;background:#fff;padding:24px;border-radius:28px;text-align:left}
@@ -51,25 +77,22 @@ button,input,select,textarea{font-family:inherit}
 header{position:sticky;top:0;z-index:20;background:var(--blanco);padding:14px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #F0E9E9}
 .logo{font-family:'Playfair Display',serif;font-size:30px}.logo i{color:#F28CA8;font-style:normal}
 .icon-btn{width:44px;height:44px;border-radius:16px;border:1px solid #F0E9E9;background:#fff;display:grid;place-items:center;font-size:20px;cursor:pointer;position:relative;flex-shrink:0}
-.icon-btn.wa{background:#E8F9EF;border-color:#C6EDD6}
-.icon-btn.ig{background:#FDEAF6;border-color:#F5D3E6}
+.icon-btn.wa{background:#E8F9EF;border-color:#C6EDD6}.icon-btn.ig{background:#FDEAF6;border-color:#F5D3E6}
 .badge{position:absolute;top:-6px;right:-6px;background:#F28CA8;color:#fff;font-size:11px;min-width:20px;height:20px;border-radius:20px;display:grid;place-items:center;font-weight:800}
 .top-icons{display:flex;gap:8px;align-items:center}
-.hero{background:var(--rosa);padding:26px 7%;display:flex;gap:16px;align-items:center;justify-content:space-between;color:#3D2B2E;border-radius:0 0 28px 28px;margin:0}
-.hero h2{font-size:30px;line-height:1.05}.hero h2 span{background:#fff;padding:2px 10px;border-radius:999px;font-size:18px;display:inline-block;margin-top:6px;color:#3D2B2E}
+.hero{background:var(--rosa);padding:26px 7%;display:flex;gap:16px;align-items:center;justify-content:space-between;border-radius:0 0 28px 28px}
+.hero h2{font-size:30px;line-height:1.05}.hero h2 span{background:#fff;padding:2px 10px;border-radius:999px;font-size:18px;display:inline-block;margin-top:6px}
 .hero p{margin:12px 0 14px;font-size:14px;color:#6B4A50}
 .hero-btn{background:#fff;color:#D94F7A;border:none;padding:13px 22px;border-radius:999px;cursor:pointer;font-weight:800}
 .search-area{padding:18px 7% 0;background:var(--blanco)}.search-box{background:#FAF8F7;border:1px solid #F0E9E9;border-radius:999px;padding:14px 18px;display:flex;gap:10px}
 .search-box input{border:none;outline:none;width:100%;font-size:15px;background:transparent}
 main{padding:0 0 110px;max-width:1200px;margin:auto;background:var(--blanco)}
 .section-title{display:flex;justify-content:space-between;align-items:center;margin:24px 0 12px}
-.fab-conseguir{position:fixed;right:16px;bottom:92px;z-index:30;border:none;border-radius:999px;background:var(--cielo);color:#2B4A5E;font-weight:800;font-size:14px;padding:14px 18px;cursor:pointer;box-shadow:0 12px 25px rgba(0,0,0,.12);display:flex;gap:8px;align-items:center;transition:.2s}
-.fab-conseguir:active{transform:scale(.94)}
+.fab-conseguir{position:fixed;right:16px;bottom:92px;z-index:30;border:none;border-radius:999px;background:var(--cielo);color:#2B4A5E;font-weight:800;font-size:14px;padding:14px 18px;cursor:pointer;box-shadow:0 12px 25px rgba(0,0,0,.12)}
 .fab-conseguir.hidden-fab{display:none}
-.add-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;place-items:end center;z-index:150;padding:0}
+.add-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;place-items:end center;z-index:150}
 .add-modal.show{display:grid}
-.add-sheet{background:#fff;width:100%;max-width:480px;border-radius:28px 28px 0 0;padding:22px 20px 26px;max-height:88vh;overflow:auto;animation:subeSheet .35s cubic-bezier(.2,.8,.3,1) both}
-@keyframes subeSheet{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.add-sheet{background:#fff;width:100%;max-width:480px;border-radius:28px 28px 0 0;padding:22px 20px 26px;max-height:88vh;overflow:auto}
 .add-sheet input,.add-sheet select,.add-sheet textarea{width:100%;padding:13px;margin-bottom:12px;border:2px solid #F0E9E9;border-radius:14px}
 .add-sheet label{font-size:12px;font-weight:800;color:#B98A92;display:block;margin-bottom:4px}
 .upload-box{border:2px dashed #F28CA8;padding:16px;text-align:center;border-radius:16px;margin-bottom:12px;background:#FFF5F7;cursor:pointer}
@@ -77,12 +100,10 @@ main{padding:0 0 110px;max-width:1200px;margin:auto;background:var(--blanco)}
 .save-button{width:100%;padding:15px;border:none;border-radius:999px;background:#8FD0FF;color:#2B4A5E;font-weight:800;cursor:pointer}
 .marcas-section{background:var(--lila);padding:22px 7% 28px;border-radius:28px 28px 0 0;margin-top:18px}
 .marcas-grid{display:grid;grid-template-columns:1fr;gap:18px}
-.marca-card{border:none;border-radius:28px;padding:0;overflow:hidden;cursor:pointer;text-align:left;box-shadow:0 10px 20px rgba(0,0,0,.08);position:relative;min-height:200px;color:#fff;transition:.25s;background:#fff}
-.marca-card:active{transform:scale(.96)}
+.marca-card{border:none;border-radius:28px;padding:0;overflow:hidden;cursor:pointer;text-align:left;box-shadow:0 10px 20px rgba(0,0,0,.08);position:relative;min-height:200px;color:#fff;background:#fff}
 .marca-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .marca-overlay{position:absolute;inset:0;background:rgba(0,0,0,.25)}
-.marca-card.yuya .marca-overlay{background:rgba(242,140,168,.55)}
-.marca-card.vs .marca-overlay{background:rgba(176,30,74,.55)}
+.marca-card.yuya .marca-overlay{background:rgba(242,140,168,.55)}.marca-card.vs .marca-overlay{background:rgba(176,30,74,.55)}
 .marca-content{position:relative;padding:22px;height:200px;display:flex;flex-direction:column;justify-content:flex-end}
 .brand-yuya{font-family:'Quicksand',sans-serif;font-weight:700;font-size:44px;line-height:.9}
 .brand-dior{font-family:'Playfair Display',serif;font-weight:700;font-size:42px;letter-spacing:10px}
@@ -90,23 +111,16 @@ main{padding:0 0 110px;max-width:1200px;margin:auto;background:var(--blanco)}
 .brand-vs small{display:block;font-size:12px;letter-spacing:6px}
 .marca-tag{display:inline-block;background:#fff;color:#111;padding:7px 14px;border-radius:999px;font-size:12px;font-weight:800;margin-top:10px;width:fit-content}
 .marca-count{font-size:12px;opacity:.95;font-weight:600;margin-top:6px}
-#brandView{position:fixed;inset:0;z-index:90;background:var(--neutro);overflow-y:auto;padding-bottom:110px;display:none;transform:translateY(100%);transition:transform .4s cubic-bezier(.22,.8,.3,1);will-change:transform}
+#brandView{position:fixed;inset:0;z-index:90;overflow-y:auto;padding-bottom:110px;display:none;transform:translateY(100%);transition:transform .4s;background-size:cover!important;background-position:center!important}
 #brandView.open{transform:translateY(0)}
-.brand-top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:8px;padding:14px 5%;background:#fff;border-bottom:1px solid #F0E9E9}
+#brandView::before{content:"";position:fixed;inset:0;background:rgba(255,255,255,.82);z-index:0;pointer-events:none}
+#brandView>*{position:relative;z-index:1}
+.brand-top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:8px;padding:14px 5%;background:rgba(255,255,255,.92);border-bottom:1px solid #F0E9E9}
 .brand-top-logo{font-size:26px;font-weight:800;flex:1}
-.brand-top.yuya .brand-top-logo{font-family:'Quicksand',sans-serif;color:#F28CA8;text-transform:lowercase}
-.brand-top.dior .brand-top-logo{font-family:'Playfair Display',serif;letter-spacing:8px;color:#111}
-.brand-top.vs .brand-top-logo{font-family:'Cinzel',serif;letter-spacing:1px;color:#B01E4A;font-size:20px}
 .btn-back{width:44px;height:44px;border-radius:50%;border:1px solid #F0E9E9;background:#fff;display:grid;place-items:center;font-size:20px;cursor:pointer;flex-shrink:0}
 .brand-hero{margin:14px 5%;border-radius:28px;padding:30px 22px;color:#fff}
-.brand-hero.yuya{background:#F28CA8}
-.brand-hero.dior{background:#111}
-.brand-hero.vs{background:#B01E4A}
+.brand-hero.yuya{background:#F28CA8}.brand-hero.dior{background:#111}.brand-hero.vs{background:#B01E4A}
 .brand-hero h2{font-size:42px;line-height:.95}
-.brand-hero.yuya h2{font-family:'Quicksand',sans-serif;text-transform:lowercase}
-.brand-hero.dior h2{font-family:'Playfair Display',serif;letter-spacing:10px;text-transform:uppercase}
-.brand-hero.vs h2{font-family:'Cinzel',serif;letter-spacing:2px;text-transform:uppercase;font-size:32px}
-.brand-hero p{margin-top:10px;opacity:.92;font-size:14px}
 .brand-search{margin:0 5%;background:#fff;border:1px solid #F0E9E9;border-radius:999px;padding:14px 18px;display:flex;gap:10px}
 .brand-search input{border:none;outline:none;width:100%;font-size:15px}
 .brand-body{padding:0 5%}
@@ -114,7 +128,7 @@ main{padding:0 0 110px;max-width:1200px;margin:auto;background:var(--blanco)}
 .brand-filter2{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
 .chip2{padding:11px 16px;border-radius:999px;border:2px solid #F0E9E9;background:#fff;cursor:pointer;font-weight:700}
 .chip2.active{background:#111;color:#fff;border-color:#111}
-.sub-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;background:#fff;padding:10px;border-radius:18px;box-shadow:0 6px 15px rgba(0,0,0,.05)}
+.sub-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;background:#fff;padding:10px;border-radius:18px}
 .sub-chip{padding:9px 14px;border-radius:999px;border:1px solid #F0E9E9;background:#FAF8F7;cursor:pointer;font-weight:700;font-size:13px}
 .sub-chip.active{background:#8FD0FF;color:#2B4A5E;border-color:transparent}
 .products{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
@@ -122,8 +136,8 @@ main{padding:0 0 110px;max-width:1200px;margin:auto;background:var(--blanco)}
 .product-image{height:175px;background:#FAF8F7;border-radius:20px;overflow:hidden}.product-image img{width:100%;height:100%;object-fit:cover}
 .badge-offer{position:absolute;left:12px;top:12px;background:#FF4757;color:#fff;font-size:11px;padding:6px 10px;border-radius:999px;font-weight:800;z-index:2}
 .badge-sub{position:absolute;left:12px;bottom:118px;background:#fff;color:#111;font-size:10px;padding:5px 8px;border-radius:999px;font-weight:800;z-index:2}
-.favorite{position:absolute;right:12px;top:12px;background:#fff;border:none;border-radius:50%;width:38px;height:38px;font-size:20px;cursor:pointer;z-index:2;color:#D8D8D8;line-height:1;display:grid;place-items:center;transition:.2s}
-.favorite.selected{color:#8FD0FF;text-shadow:0 0 10px rgba(143,208,255,.8);transform:scale(1.05)}
+.favorite{position:absolute;right:12px;top:12px;background:#fff;border:none;border-radius:50%;width:38px;height:38px;font-size:20px;cursor:pointer;z-index:2;color:#D8D8D8;display:grid;place-items:center}
+.favorite.selected{color:#8FD0FF}
 .product h3{font-size:14px;margin:11px 0 4px;min-height:34px;font-weight:800}.desc{font-size:12px;color:var(--muted);min-height:28px}
 .price-row{display:flex;gap:6px;margin-bottom:10px}.price{font-weight:800;font-size:16px}.old{font-size:12px;color:#AAA;text-decoration:line-through}
 .add-cart{background:#F28CA8;color:#fff;border:none;padding:12px;width:100%;border-radius:999px;cursor:pointer;font-weight:800}
@@ -135,501 +149,208 @@ main{padding:0 0 110px;max-width:1200px;margin:auto;background:var(--blanco)}
 .cart-items{flex:1;overflow:auto;padding:12px}.cart-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid #FFF0F3}.cart-item img{width:62px;height:62px;object-fit:cover;border-radius:14px}
 .qty{display:flex;gap:8px;align-items:center;margin-top:6px}.qty button{width:28px;height:28px;border-radius:50%;border:1px solid #F0E9E9;background:#fff;cursor:pointer;font-weight:800}
 .drawer-foot{padding:14px;border-top:1px solid #F0E9E9}
-.checkout{width:100%;padding:15px;border:none;border-radius:999px;background:#25D366;color:#fff;font-weight:800;cursor:pointer}
-.checkout-ig{width:100%;padding:15px;border:none;border-radius:999px;background:#111;color:#fff;font-weight:800;cursor:pointer;margin-top:8px}
-.checkout2{width:100%;padding:12px;border:1px solid #EEE;border-radius:999px;background:#fff;cursor:pointer;margin-top:8px}
-.orders-in-bag{margin-top:12px;background:#FAF8F7;border-radius:14px;padding:12px;font-size:12px;color:var(--muted)}
-#profileView{position:fixed;inset:0;z-index:95;background:var(--neutro);overflow-y:auto;padding-bottom:110px;display:none;transform:translateY(100%);transition:transform .4s cubic-bezier(.22,.8,.3,1)}
+.checkout2{width:100%;padding:15px;border:none;border-radius:999px;background:#F28CA8;color:#fff;font-weight:800;cursor:pointer;font-size:15px}
+.orders-in-bag{margin-top:14px;background:#FFF5F7;border-radius:18px;padding:14px;font-size:12px;color:var(--muted)}
+#profileView{position:fixed;inset:0;z-index:95;background:var(--neutro);overflow-y:auto;padding-bottom:110px;display:none;transform:translateY(100%);transition:transform .4s}
 #profileView.open{transform:translateY(0)}
 .profile-hero{margin:14px 5%;background:var(--cielo);border-radius:28px;padding:28px 22px;color:#2B4A5E;text-align:center}
-.profile-avatar-big{width:84px;height:84px;border-radius:28px;background:#fff;display:grid;place-items:center;font-size:42px;margin:0 auto 10px}
-.profile-hero h2{font-size:28px}
-.profile-hero p{opacity:.85;font-size:13px;margin-top:6px}
-.profile-stats{display:flex;gap:10px;margin:14px 5%}
-.profile-stat{flex:1;background:#fff;border-radius:18px;padding:14px;text-align:center;box-shadow:0 8px 20px rgba(0,0,0,.05)}
-.profile-stat b{font-size:20px;display:block}
-.profile-stat span{font-size:12px;color:var(--muted)}
+.profile-avatar-big{width:110px;height:110px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:52px;margin:0 auto 12px;overflow:hidden;position:relative;box-shadow:0 10px 25px rgba(0,0,0,.12);cursor:pointer}
+.profile-avatar-big img{width:100%;height:100%;object-fit:cover}
+.avatar-plus{position:absolute;right:4px;bottom:4px;width:32px;height:32px;border-radius:50%;background:#F28CA8;color:#fff;display:grid;place-items:center;font-size:18px;font-weight:800;border:3px solid #fff}
+.profile-hero h2{font-size:26px;line-height:1.1}
+.profile-hero p{opacity:.9;font-size:15px;margin-top:6px;font-weight:600}
 .profile-form{margin:0 5%;background:#fff;border-radius:24px;padding:20px}
 .profile-form label{font-size:12px;font-weight:800;color:#B98A92;display:block;margin-bottom:4px}
 .profile-form input{width:100%;padding:13px;margin-bottom:12px;border:2px solid #F0E9E9;border-radius:14px}
 .profile-form button{width:100%;padding:13px;border:none;border-radius:999px;font-weight:800;cursor:pointer;margin-top:8px}
-/* APARTADO DE CONTACTO - WHATSAPP / INSTAGRAM */
-#contactView{position:fixed;inset:0;z-index:96;background:var(--neutro);overflow-y:auto;padding-bottom:110px;display:none;transform:translateY(100%);transition:transform .4s cubic-bezier(.22,.8,.3,1)}
+#contactView{position:fixed;inset:0;z-index:96;background:var(--neutro);overflow-y:auto;padding-bottom:110px;display:none;transform:translateY(100%);transition:transform .4s}
 #contactView.open{transform:translateY(0)}
 .contact-card{margin:14px 5%;background:#fff;border-radius:24px;padding:20px}
-.contact-card.wa{border:2px solid #C6EDD6}
-.contact-card.ig{border:2px solid #F5D3E6}
+.contact-card.wa{border:2px solid #C6EDD6}.contact-card.ig{border:2px solid #F5D3E6}
 .contact-btn{width:100%;padding:14px;border:none;border-radius:999px;font-weight:800;cursor:pointer;margin-top:10px}
-.profile-switch-bar{position:fixed;left:0;right:0;bottom:0;z-index:210;background:#fff;border-radius:28px 28px 0 0;padding:18px 16px 22px;box-shadow:0 -10px 30px rgba(0,0,0,.15);display:none;animation:subeBar .3s ease both}
+.profile-switch-bar{position:fixed;left:0;right:0;bottom:0;z-index:210;background:#fff;border-radius:28px 28px 0 0;padding:18px 16px 22px;box-shadow:0 -10px 30px rgba(0,0,0,.15);display:none}
 .profile-switch-bar.show{display:block}
-@keyframes subeBar{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .switch-profile-btn{display:flex;gap:12px;align-items:center;width:100%;padding:12px;border:2px solid #F0E9E9;border-radius:18px;background:#fff;cursor:pointer;margin-bottom:10px;text-align:left}
 .switch-profile-btn.active{border-color:#F28CA8;background:#FFF5F7}
-.switch-avatar{width:44px;height:44px;border-radius:14px;background:var(--lila);display:grid;place-items:center;font-size:22px;flex-shrink:0}
+.switch-avatar{width:44px;height:44px;border-radius:50%;background:var(--lila);display:grid;place-items:center;font-size:22px;flex-shrink:0;overflow:hidden}
+.switch-avatar img{width:100%;height:100%;object-fit:cover}
 .bottom-nav{position:fixed;bottom:0;width:100%;background:#fff;display:flex;justify-content:space-around;padding:10px 5px 16px;z-index:10;border-top:1px solid #F0E9E9}
 .bottom-nav.hidden-nav{display:none}
 .nav-item{border:none;background:none;color:#B98A92;font-size:12px;cursor:pointer;font-weight:700}.nav-item span{display:block;font-size:24px}.nav-item.active{color:#F28CA8}
-.brand-bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:95;background:#fff;display:none;justify-content:space-around;padding:10px 5px 16px;border-top:1px solid #F0E9E9}
-.brand-bottom-nav.show{display:flex}
-.brand-bottom-nav button{border:none;background:none;color:#B98A92;font-size:12px;cursor:pointer;font-weight:700}
-.brand-bottom-nav button span{display:block;font-size:24px}
-.brand-bottom-nav button.active{color:#F28CA8}
-.profile-bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:96;background:#fff;display:none;justify-content:space-around;padding:10px 5px 16px;border-top:1px solid #F0E9E9}
-.profile-bottom-nav.show{display:flex}
-.profile-bottom-nav button{border:none;background:none;color:#B98A92;font-size:12px;cursor:pointer;font-weight:700}
-.profile-bottom-nav button span{display:block;font-size:24px}
-.profile-bottom-nav button.active{color:#F28CA8}
-.contact-bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:97;background:#fff;display:none;justify-content:space-around;padding:10px 5px 16px;border-top:1px solid #F0E9E9}
-.contact-bottom-nav.show{display:flex}
-.contact-bottom-nav button{border:none;background:none;color:#B98A92;font-size:12px;cursor:pointer;font-weight:700}
-.contact-bottom-nav button span{display:block;font-size:24px}
-.contact-bottom-nav button.active{color:#F28CA8}
+.brand-bottom-nav,.profile-bottom-nav,.contact-bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:none;justify-content:space-around;padding:10px 5px 16px;border-top:1px solid #F0E9E9}
+.brand-bottom-nav{z-index:95}.profile-bottom-nav{z-index:96}.contact-bottom-nav{z-index:97}
+.brand-bottom-nav.show,.profile-bottom-nav.show,.contact-bottom-nav.show{display:flex}
+.brand-bottom-nav button,.profile-bottom-nav button,.contact-bottom-nav button{border:none;background:none;color:#B98A92;font-size:12px;cursor:pointer;font-weight:700}
+.brand-bottom-nav button span,.profile-bottom-nav button span,.contact-bottom-nav button span{display:block;font-size:24px}
+.brand-bottom-nav button.active,.profile-bottom-nav button.active,.contact-bottom-nav button.active{color:#F28CA8}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#2D1A1E;color:#fff;padding:12px 18px;border-radius:999px;font-size:13px;opacity:0;transition:.3s;z-index:300}.toast.show{opacity:1}
 @media(min-width:750px){.products{grid-template-columns:repeat(4,1fr)}.marcas-grid{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
-
-<div id="brandTransition">
-  <img id="transImg" src="" alt="">
-  <div class="trans-overlay"></div>
-  <div class="bokeh b1"></div><div class="bokeh b2"></div><div class="bokeh b3"></div><div class="bokeh b4"></div><div class="bokeh b5"></div><div class="bokeh b6"></div>
-  <div class="trans-content">
-    <div id="transBrand" class="trans-brand yuya">yuya ♥</div>
-    <div class="trans-line"></div>
-    <div id="transSub" class="trans-sub">Bienvenida a tu tienda</div>
-  </div>
-</div>
-
-<div id="portada">
-  <div id="portadaInicio" class="portada-box">
-    <div class="emoji3d-big">💗</div>
-    <div class="portada-logo">Glow<i>Lab</i></div>
-    <p class="portada-sub">Tu glow, tu laboratorio.<br>Skincare, maquillaje y perfumes para tu piel.</p>
-    <button class="portada-btn" type="button" onclick="irAperfiles()">Entrar a GlowLab →</button>
-  </div>
-  <div id="perfilesBox" class="portada-box" style="display:none">
-    <h2>¿Ya tienes perfil? 💗</h2><p style="font-size:13px;color:var(--muted);margin:8px 0 16px">Elige uno para entrar automático o crea uno nuevo</p>
-    <div id="listaPerfiles"></div>
-    <button class="portada-btn" type="button" onclick="irAregistro()">+ Perfil nuevo →</button>
-    <button class="portada-btn2" type="button" onclick="volverPortada()">← Volver</button>
-  </div>
-  <div id="registroBox" style="display:none">
-    <h2 style="text-align:center">Perfil nuevo ✨</h2>
-    <label>Tu nombre *</label><input id="regNombre" placeholder="Ej: Ana Pérez">
-    <label>Tu número *</label><input id="regTelefono" type="tel" placeholder="Ej: 2411712962">
-    <label>Tu Instagram *</label><input id="regInstagram" placeholder="Ej: @ana.glow">
-    <button class="btn-reg" type="button" onclick="crearPerfil()">Crear perfil y entrar →</button>
-    <button class="btn-volver" type="button" onclick="irAperfiles()">← Volver a perfiles</button>
-  </div>
-</div>
-
-<!-- ARRIBA: LOGO + WHATSAPP + INSTAGRAM + BOLSA -->
-<header id="mainHeader"><h1 class="logo">Glow<i>Lab</i></h1><div class="top-icons">
-<button class="icon-btn wa" onclick="openContact('wa')" title="WhatsApp">💚</button>
-<button class="icon-btn ig" onclick="openContact('ig')" title="Instagram">📸</button>
-<button class="icon-btn" onclick="openCart()">🛍️<span class="badge" id="cartCount">0</span></button>
-</div></header>
-
-<section class="hero" id="mainHero"><div><h2 id="welcomeTitle">Hola, Glow Girl 💗<br><span>tu glow, tu laboratorio.</span></h2><p id="welcomeSub">Skincare, maquillaje y perfumes para tu piel.</p><button class="hero-btn" onclick="goHome()">Comprar ahora →</button></div><div class="emoji3d-big" style="font-size:56px">💄</div></section>
-<div class="search-area" id="mainSearch"><div class="search-box"><span>🔍</span><input id="search" placeholder="Buscar" oninput="applyFilters()"></div></div>
-
-<main id="mainContent">
-<div id="homeView">
-  <div class="marcas-section">
-    <div class="section-title" style="margin-top:0"><h2>Elige tu marca 💖</h2><span style="font-size:12px;color:var(--muted)">Toca una para entrar</span></div>
-    <div class="marcas-grid">
-      <button class="marca-card yuya" onclick="openBrand('Yuya')"><img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800"><div class="marca-overlay"></div><div class="marca-content"><div class="brand-yuya">yuya ♥</div><div class="marca-count" id="countYuya">10 productos</div><span class="marca-tag">Entrar a Yuya →</span></div></button>
-      <button class="marca-card" onclick="openBrand('Dior')"><img src="https://images.unsplash.com/photo-1541643600914-78b084683601?w=800"><div class="marca-overlay"></div><div class="marca-content"><div class="brand-dior">DIOR</div><div class="marca-count" id="countDior">10 productos</div><span class="marca-tag">Entrar a Dior →</span></div></button>
-      <button class="marca-card vs" onclick="openBrand('Victoria\'s Secret')"><img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?w=800"><div class="marca-overlay"></div><div class="marca-content"><div class="brand-vs">VICTORIA'S<small>SECRET</small></div><div class="marca-count" id="countVS">10 productos</div><span class="marca-tag">Entrar a Victoria's →</span></div></button>
-    </div>
-  </div>
-</div>
-</main>
-
+<div id="brandTransition"><img id="transImg" src="" alt=""><div class="trans-overlay"></div><div class="bokeh b1"></div><div class="bokeh b2"></div><div class="bokeh b3"></div><div class="bokeh b4"></div><div class="bokeh b5"></div><div class="bokeh b6"></div><div class="trans-content"><div id="transBrand" class="trans-brand yuya">yuya ♥</div><div class="trans-line"></div><div id="transSub" class="trans-sub">Bienvenida a tu tienda</div></div></div>
+<div id="secondTransition"><div class="second-card"><div class="second-logo" id="secondLogo">yuya ♥</div><p style="font-size:13px;color:#999;margin-top:8px" id="secondSub">Abriendo maquillajes... 💄</p><p style="font-size:22px;margin-top:8px">✨💗✨</p></div></div>
+<div id="portada"><div id="portadaInicio" class="portada-box"><div class="emoji3d-big">💗</div><div class="portada-logo">Glow<i>Lab</i></div><p class="portada-sub">Tu glow, tu laboratorio.<br>Skincare, maquillaje y perfumes para tu piel.</p><button class="portada-btn" type="button" onclick="irAperfiles()">Entrar a GlowLab →</button></div><div id="perfilesBox" class="portada-box" style="display:none"><h2>¿Ya tienes perfil? 💗</h2><p style="font-size:13px;color:var(--muted);margin:8px 0 16px">Elige uno para entrar automático o crea uno nuevo</p><div id="listaPerfiles"></div><button class="portada-btn" type="button" onclick="irAregistro()">+ Perfil nuevo →</button><button class="portada-btn2" type="button" onclick="volverPortada()">← Volver</button></div><div id="registroBox" style="display:none"><h2 style="text-align:center">Perfil nuevo ✨</h2><label>Tu nombre *</label><input id="regNombre" placeholder="Ej: Ana Pérez"><label>Tu número *</label><input id="regTelefono" type="tel" placeholder="Ej: 2411712962"><label>Tu Instagram *</label><input id="regInstagram" placeholder="Ej: @ana.glow"><button class="btn-reg" type="button" onclick="crearPerfil()">Crear perfil y entrar →</button><button class="btn-volver" type="button" onclick="irAperfiles()">← Volver a perfiles</button></div></div>
+<header><h1 class="logo">Glow<i>Lab</i></h1><div class="top-icons"><button class="icon-btn wa" onclick="openContact('wa')">💚</button><button class="icon-btn ig" onclick="openContact('ig')">📸</button><button class="icon-btn" id="cartBtnTop" onclick="openCart()">🛍️<span class="badge" id="cartCount">0</span></button></div></header>
+<section class="hero"><div><h2 id="welcomeTitle">Hola, Glow Girl 💗<br><span>tu glow, tu laboratorio.</span></h2><p id="welcomeSub">Skincare, maquillaje y perfumes para tu piel.</p><button class="hero-btn" onclick="goHome()">Comprar ahora →</button></div><div class="emoji3d-big" style="font-size:56px">💄</div></section>
+<div class="search-area"><div class="search-box"><span>🔍</span><input id="search" placeholder="Buscar" oninput="applyFilters()"></div></div>
+<main><div id="homeView"><div class="marcas-section"><div class="section-title" style="margin-top:0"><h2>Elige tu marca 💖</h2><span style="font-size:12px;color:var(--muted)">Toca una para entrar</span></div><div class="marcas-grid"><button class="marca-card yuya" onclick="openBrand('Yuya')"><img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800"><div class="marca-overlay"></div><div class="marca-content"><div class="brand-yuya">yuya ♥</div><div class="marca-count" id="countYuya">10 productos</div><span class="marca-tag">Entrar a Yuya →</span></div></button><button class="marca-card" onclick="openBrand('Dior')"><img src="https://images.unsplash.com/photo-1541643600914-78b084683601?w=800"><div class="marca-overlay"></div><div class="marca-content"><div class="brand-dior">DIOR</div><div class="marca-count" id="countDior">10 productos</div><span class="marca-tag">Entrar a Dior →</span></div></button><button class="marca-card vs" onclick="openBrand('Victoria\'s Secret')"><img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?w=800"><div class="marca-overlay"></div><div class="marca-content"><div class="brand-vs">VICTORIA'S<small>SECRET</small></div><div class="marca-count" id="countVS">10 productos</div><span class="marca-tag">Entrar a Victoria's →</span></div></button></div></div></div></main>
 <button class="fab-conseguir" id="fabConseguir" onclick="openAddModal()">＋ Conseguir producto</button>
-
-<div class="add-modal" id="addModal" onclick="if(event.target===this) closeAddModal()">
-  <div class="add-sheet">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h2>Conseguir producto 💗</h2><button onclick="closeAddModal()" style="border:none;background:#FFF0F3;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer">✕</button></div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Llena los datos y tu producto aparece en su marca 💖</p>
-    <form id="productForm">
-      <label>Nombre del producto *</label><input id="name" placeholder="Ej: Labial Rosa Yuya" required>
-      <label>Referencia / Foto *</label>
-      <div class="upload-box" onclick="document.getElementById('image').click()">📷 Toca para subir foto de referencia<input type="file" id="image" accept="image/*" style="display:none" required><img id="preview"></div>
-      <label>Descripción</label><textarea id="description" placeholder="Ej: Tono rosa natural, cremoso..." required></textarea>
-      <label>Marca</label><input id="brand" placeholder="Ej: Yuya">
-      <select id="brandSelect"><option value="">Marca (elige una)</option><option>Yuya</option><option>Dior</option><option>Victoria's Secret</option></select>
-      <label>Categoría</label><select id="category" required><option value="">Categoría</option><option>Maquillaje</option><option>Skincare</option><option>Perfumes</option></select>
-      <label>Sub-apartado</label><select id="subSelect"><option value="">Sub-apartado</option><option>Labiales</option><option>Pestañas y Ojos</option><option>Rostro</option><option>Cara</option><option>Perfumes</option></select>
-      <div style="display:flex;gap:10px"><div style="flex:1"><label>Precio *</label><input id="price" type="number" placeholder="$0" required></div><div style="flex:1"><label>Precio anterior</label><input id="oldPrice" type="number" placeholder="$0"></div></div>
-      <button class="save-button" type="submit">✨ Conseguir producto</button>
-      <button type="button" onclick="closeAddModal()" style="width:100%;padding:12px;border:none;border-radius:999px;background:#F5F0F0;margin-top:8px;cursor:pointer;font-weight:700">Cancelar</button>
-    </form>
-  </div>
-</div>
-
-<div id="brandView">
-  <div id="brandTop" class="brand-top">
-    <button class="btn-back" onclick="goHome()">←</button>
-    <div class="brand-top-logo" id="brandTopLogo">yuya ♥</div>
-    <div class="top-icons">
-      <button class="icon-btn wa" onclick="openContact('wa')">💚</button>
-      <button class="icon-btn ig" onclick="openContact('ig')">📸</button>
-      <button class="icon-btn" onclick="openCart()" style="width:44px;height:44px">🛍️<span class="badge" id="cartCountBrand">0</span></button>
-    </div>
-  </div>
-  <div id="brandHero" class="brand-hero yuya"><h2 id="brandHeroTitle">yuya ♥</h2><p id="brandHeroSub"></p><p id="brandHeroCount" style="font-size:12px;opacity:.8;margin-top:6px"></p></div>
-  <div class="brand-search"><span>🔍</span><input id="brandSearch" placeholder="Buscar" oninput="applyFilters()"></div>
-  <div class="brand-body">
-    <div class="sub-title">APARTADOS DE <span id="brandNameLabel">YUYA</span></div>
-    <div class="brand-filter2" id="brandFilter2"></div>
-    <div id="subFilterWrap" style="display:none">
-      <div class="sub-title">💄 MAQUILLAJE - ELIGE TIPO</div>
-      <div class="sub-filter" id="subFilter"></div>
-    </div>
-    <div class="section-title"><h2 id="productsTitle">Productos</h2></div>
-    <div class="products" id="products"></div>
-    <p style="text-align:center;color:var(--muted);font-size:12px;margin:20px 0">Estás solo dentro de <b id="brandFooterName">Yuya</b> 💗</p>
-  </div>
-</div>
-
-<!-- PERFIL LIMPIO - SIN WHATSAPP / INSTAGRAM / CAMBIAR PERFIL -->
-<div id="profileView">
-  <div class="brand-top"><button class="btn-back" onclick="closeProfile()">←</button><div class="brand-top-logo" style="font-size:20px">Mi perfil 👤</div><div class="top-icons">
-    <button class="icon-btn wa" onclick="openContact('wa')">💚</button>
-    <button class="icon-btn ig" onclick="openContact('ig')">📸</button>
-    <button class="icon-btn" onclick="openCart()" style="width:44px;height:44px">🛍️<span class="badge" id="cartCountProfile">0</span></button>
-  </div></div>
-  <div class="profile-hero">
-    <div class="profile-avatar-big" id="profileAvatarBig">💗</div>
-    <h2 id="profileNameBig">Glow Girl</h2>
-    <p id="profileInfoBig">Entra a tu perfil para ver tus datos</p>
-  </div>
-  <div class="profile-stats">
-    <div class="profile-stat"><b id="statOrders">0</b><span>📦 Pedidos</span></div>
-    <div class="profile-stat"><b id="statCart">0</b><span>🛍️ En bolsa</span></div>
-    <div class="profile-stat"><b id="statFav">0</b><span>⭐ Favoritos</span></div>
-  </div>
-  <div class="profile-form">
-    <label>Tu nombre</label><input id="userName" placeholder="Tu nombre">
-    <label>Tu teléfono</label><input id="userPhone" placeholder="Tu teléfono">
-    <label>Tu Instagram</label><input id="userInsta" placeholder="Tu Instagram @...">
-    <button onclick="saveUser()" style="background:#F28CA8;color:#fff">Guardar cambios 💗</button>
-    <button onclick="eliminarPerfilActual()" style="background:#FFF0F3;color:#C22">🗑️ Eliminar este perfil</button>
-    <button onclick="closeProfile()" style="background:#EEE;color:#49372C">← Volver a la tienda</button>
-    <p style="font-size:11px;color:#999;text-align:center;margin-top:10px">Tip: toca 1 vez 👤 para ver tu perfil, 2 veces rápido para cambiar de perfil 💗</p>
-  </div>
-</div>
-
-<!-- APARTADO DE CONTACTO - WHATSAPP / INSTAGRAM -->
-<div id="contactView">
-  <div class="brand-top"><button class="btn-back" onclick="closeContact()">←</button><div class="brand-top-logo" style="font-size:20px" id="contactTitle">Contáctanos 💚</div><div class="top-icons">
-    <button class="icon-btn wa" onclick="openContact('wa')">💚</button>
-    <button class="icon-btn ig" onclick="openContact('ig')">📸</button>
-    <button class="icon-btn" onclick="openCart()" style="width:44px;height:44px">🛍️<span class="badge" id="cartCountContact">0</span></button>
-  </div></div>
-
-  <div class="contact-card wa" id="contactWaCard">
-    <div style="font-size:40px">💚</div>
-    <h2 style="margin:8px 0 4px">WhatsApp GlowLab</h2>
-    <p style="font-size:13px;color:var(--muted)">Mándanos mensaje para dudas, aclaraciones o pedidos. Te contestamos con mucho amor 💗</p>
-    <label style="font-size:12px;font-weight:800;color:#B98A92;display:block;margin-top:14px">¿Sobre qué es tu mensaje?</label>
-    <button class="contact-btn" onclick="sendWa('duda')" style="background:#E8F9EF;color:#1A7A3A">❓ Tengo una duda</button>
-    <button class="contact-btn" onclick="sendWa('aclaracion')" style="background:#FFF5E0;color:#8A5A00">💬 Aclaración de un pedido / producto</button>
-    <button class="contact-btn" onclick="sendWa('pedido')" style="background:#25D366;color:#fff">🛍️ Quiero hacer un pedido</button>
-    <label style="font-size:12px;font-weight:800;color:#B98A92;display:block;margin-top:14px">O escribe tu mensaje</label>
-    <textarea id="waCustom" placeholder="Ej: Hola, ¿tienen disponible el labial rosa de Yuya?" style="width:100%;padding:13px;border:2px solid #F0E9E9;border-radius:14px;margin-top:6px;min-height:70px"></textarea>
-    <button class="contact-btn" onclick="sendWa('custom')" style="background:#25D366;color:#fff">Enviar por WhatsApp 💚 →</button>
-  </div>
-
-  <div class="contact-card ig" id="contactIgCard">
-    <div style="font-size:40px">📸</div>
-    <h2 style="margin:8px 0 4px">Instagram @yahix.line</h2>
-    <p style="font-size:13px;color:var(--muted)">Síguenos para ver novedades, ofertas y los productos nuevos de GlowLab ✨</p>
-    <button class="contact-btn" onclick="followIg()" style="background:#111;color:#fff">📸 Seguir @yahix.line</button>
-    <button class="contact-btn" onclick="sendIgDm()" style="background:#FDEAF6;color:#7A2A5A">💬 Mandar mensaje por Instagram</button>
-    <button class="contact-btn" onclick="shareStore()" style="background:#fff;border:2px solid #F0E9E9;color:#3D2B2E">💗 Compartir GlowLab</button>
-  </div>
-</div>
-
-<div class="profile-switch-bar" id="profileSwitchBar">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><b>¿A qué perfil entras? 👤</b><button onclick="closeSwitchBar()" style="border:none;background:#FFF0F3;width:32px;height:32px;border-radius:50%;cursor:pointer">✕</button></div>
-  <p style="font-size:12px;color:#999;margin-bottom:12px">Toca el perfil al que quieres cambiar</p>
-  <div id="switchList"></div>
-  <button onclick="closeSwitchBar()" style="width:100%;padding:12px;border:none;border-radius:999px;background:#F5F0F0;margin-top:4px;cursor:pointer;font-weight:700">Cancelar</button>
-</div>
-
-<div id="brandBottomNav" class="brand-bottom-nav">
-  <button onclick="goHome()"><span>←</span>Marcas</button>
-  <button class="active"><span>🏠</span><span id="brandNavName">Yuya</span></button>
-  <button onclick="openCart()"><span>🛍️</span>Bolsa</button>
-  <button onclick="showFavorites()"><span>⭐</span>Favoritos</button>
-  <button onclick="onProfileClick()"><span>👤</span>Perfil</button>
-</div>
-
-<div id="profileBottomNav" class="profile-bottom-nav">
-  <button onclick="closeProfile()"><span>←</span>Tienda</button>
-  <button onclick="openCart()"><span>🛍️</span>Bolsa</button>
-  <button class="active" onclick="onProfileClick()"><span>👤</span>Perfil</button>
-  <button onclick="closeProfile();showFavorites()"><span>⭐</span>Favoritos</button>
-</div>
-
-<div id="contactBottomNav" class="contact-bottom-nav">
-  <button onclick="closeContact()"><span>←</span>Tienda</button>
-  <button onclick="openCart()"><span>🛍️</span>Bolsa</button>
-  <button class="active"><span>💬</span>Contacto</button>
-  <button onclick="closeContact();onProfileClick()"><span>👤</span>Perfil</button>
-</div>
-
-<nav class="bottom-nav" id="mainBottomNav">
-<button class="nav-item active" onclick="goHome();setNav(this)"><span>🏠</span>Inicio</button>
-<button class="nav-item" onclick="focusSearch();setNav(this)"><span>🔍</span>Buscar</button>
-<button class="nav-item" onclick="openCart();setNav(this)"><span>🛍️</span>Bolsa</button>
-<button class="nav-item" onclick="showFavorites();setNav(this)"><span>⭐</span>Favoritos</button>
-<button class="nav-item" onclick="onProfileClick();setNav(this)"><span>👤</span>Perfil</button>
-</nav>
-
+<div class="add-modal" id="addModal" onclick="if(event.target===this) closeAddModal()"><div class="add-sheet"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h2>Conseguir producto 💗</h2><button onclick="closeAddModal()" style="border:none;background:#FFF0F3;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer">✕</button></div><form id="productForm"><label>Nombre del producto *</label><input id="name" placeholder="Ej: Labial Rosa Yuya" required><label>Referencia / Foto *</label><div class="upload-box" onclick="document.getElementById('image').click()">📷 Toca para subir foto<input type="file" id="image" accept="image/*" style="display:none" required><img id="preview"></div><label>Descripción</label><textarea id="description" placeholder="Ej: Tono rosa natural..." required></textarea><label>Marca</label><input id="brand" placeholder="Ej: Yuya"><select id="brandSelect"><option value="">Marca (elige una)</option><option>Yuya</option><option>Dior</option><option>Victoria's Secret</option></select><label>Categoría</label><select id="category" required><option value="">Categoría</option><option>Maquillaje</option><option>Skincare</option><option>Perfumes</option></select><label>Sub-apartado</label><select id="subSelect"><option value="">Sub-apartado</option><option>Labiales</option><option>Pestañas y Ojos</option><option>Rostro</option><option>Cara</option><option>Perfumes</option></select><div style="display:flex;gap:10px"><div style="flex:1"><label>Precio *</label><input id="price" type="number" placeholder="$0" required></div><div style="flex:1"><label>Precio anterior</label><input id="oldPrice" type="number" placeholder="$0"></div></div><label>Cantidad que tienes en stock *</label><input id="stockInput" type="number" value="10" min="0" required><button class="save-button" type="submit">✨ Conseguir producto</button><button type="button" onclick="closeAddModal()" style="width:100%;padding:12px;border:none;border-radius:999px;background:#F5F0F0;margin-top:8px;cursor:pointer;font-weight:700">Cancelar</button></form></div></div>
+<div class="pay-modal" id="payModal" onclick="if(event.target===this) closePayModal()"><div class="pay-sheet"><div style="display:flex;justify-content:space-between;align-items:center"><h2>💳 Pagar y envío</h2><button onclick="closePayModal()" style="border:none;background:#FFF0F3;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer">✕</button></div><p style="font-size:13px;color:var(--muted);margin-top:6px">Total: <b id="payTotal" style="color:#111;font-size:16px">$0.00</b> • <span id="payResumen"></span></p><label>💳 ¿Cómo vas a pagar?</label><div class="pay-opt" id="payMethods"><button type="button" class="pay-chip sel" onclick="selPago('Efectivo',this)">💵 Efectivo</button><button type="button" class="pay-chip" onclick="selPago('Transferencia',this)">🏦 Transferencia</button><button type="button" class="pay-chip" onclick="selPago('Tarjeta',this)">💳 Tarjeta</button><button type="button" class="pay-chip" onclick="selPago('Pago al entregar',this)">📱 Al entregar</button></div><label>🚚 ¿Cómo lo quieres?</label><div class="pay-opt" id="deliveryMethods"><button type="button" class="pay-chip sel2" onclick="selEntrega('Entrega a domicilio',this)">🚚 A domicilio</button><button type="button" class="pay-chip" onclick="selEntrega('Recoger en tienda',this)">🏪 Recoger</button></div><div id="envioForm"><label>¿Quién recibe?</label><input id="shipNombre" placeholder="Ej: Ana Pérez"><label>Calle y número</label><input id="shipCalle" placeholder="Ej: Calle 5 de Mayo #12"><label>Colonia / Pueblo</label><input id="shipColonia" placeholder="Ej: Centro, Yauhquemehcan"><label>Referencias</label><textarea id="shipRef" placeholder="Ej: Casa rosa, junto a la farmacia, portón negro"></textarea><label>Teléfono para entrega</label><input id="shipTel" placeholder="Ej: 2411712962"></div><div id="recogerInfo" style="display:none;background:#FFF5F7;padding:12px;border-radius:14px;margin-top:12px;font-size:13px">🏪 Recoges en tienda GlowLab. Te avisamos por WhatsApp cuando esté listo 💗</div><button onclick="confirmarPago()" style="width:100%;padding:15px;border:none;border-radius:999px;background:#F28CA8;color:#fff;font-weight:800;cursor:pointer;margin-top:16px">✅ Confirmar pago y enviar pedido →</button></div></div>
+<div id="brandView"><div class="brand-top"><button class="btn-back" onclick="goHome()">←</button><div class="brand-top-logo" id="brandTopLogo">yuya ♥</div><div class="top-icons"><button class="icon-btn wa" onclick="openContact('wa')">💚</button><button class="icon-btn ig" onclick="openContact('ig')">📸</button><button class="icon-btn" id="cartBtnBrand" onclick="openCart()">🛍️<span class="badge" id="cartCountBrand">0</span></button></div></div><div id="brandHero" class="brand-hero yuya"><h2 id="brandHeroTitle">yuya ♥</h2><p id="brandHeroSub"></p><p id="brandHeroCount" style="font-size:12px;opacity:.8;margin-top:6px"></p></div><div class="brand-search"><span>🔍</span><input id="brandSearch" placeholder="Buscar" oninput="applyFilters()"></div><div class="brand-body"><div class="sub-title">APARTADOS DE <span id="brandNameLabel">YUYA</span></div><div class="brand-filter2" id="brandFilter2"></div><div id="subFilterWrap" style="display:none"><div class="sub-title">💄 MAQUILLAJE - ELIGE TIPO</div><div class="sub-filter" id="subFilter"></div></div><div class="section-title"><h2 id="productsTitle">Productos</h2></div><div class="products" id="products"></div><p style="text-align:center;color:var(--muted);font-size:12px;margin:20px 0">Estás solo dentro de <b id="brandFooterName">Yuya</b> 💗</p></div></div>
+<div id="profileView"><div class="brand-top"><button class="btn-back" onclick="closeProfile()">←</button><div class="brand-top-logo" style="font-size:20px">Mi perfil 👤</div><div class="top-icons"><button class="icon-btn wa" onclick="openContact('wa')">💚</button><button class="icon-btn ig" onclick="openContact('ig')">📸</button><button class="icon-btn" onclick="openCart()">🛍️<span class="badge" id="cartCountProfile">0</span></button></div></div><div class="profile-hero"><div class="profile-avatar-big" id="profileAvatarBig" onclick="document.getElementById('avatarInput').click()">💗<span class="avatar-plus">+</span></div><input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="cambiarFotoPerfil(event)"><h2 id="profileNameBig">Glow Girl</h2><p id="profileInfoBig">@tu.insta</p></div><div class="profile-form"><label>Tu nombre</label><input id="userName" placeholder="Tu nombre"><label>Tu teléfono</label><input id="userPhone" placeholder="Tu teléfono"><label>Tu Instagram</label><input id="userInsta" placeholder="Tu Instagram @..."><button onclick="saveUser()" style="background:#F28CA8;color:#fff">Guardar cambios 💗</button><button onclick="eliminarPerfilActual()" style="background:#FFF0F3;color:#C22">🗑️ Eliminar este perfil</button><button onclick="closeProfile()" style="background:#EEE;color:#49372C">← Volver a la tienda</button></div></div>
+<div id="contactView"><div class="brand-top"><button class="btn-back" onclick="closeContact()">←</button><div class="brand-top-logo" style="font-size:20px" id="contactTitle">Contáctanos 💚</div><div class="top-icons"><button class="icon-btn wa" onclick="openContact('wa')">💚</button><button class="icon-btn ig" onclick="openContact('ig')">📸</button><button class="icon-btn" onclick="openCart()">🛍️<span class="badge" id="cartCountContact">0</span></button></div></div><div class="contact-card wa" id="contactWaCard"><div style="font-size:40px">💚</div><h2>WhatsApp GlowLab</h2><p style="font-size:13px;color:var(--muted)">Mándanos mensaje para dudas o pedidos 💗</p><button class="contact-btn" onclick="sendWa('duda')" style="background:#E8F9EF;color:#1A7A3A">❓ Tengo una duda</button><button class="contact-btn" onclick="sendWa('aclaracion')" style="background:#FFF5E0;color:#8A5A00">💬 Aclaración de un pedido</button><button class="contact-btn" onclick="sendWa('pedido')" style="background:#25D366;color:#fff">🛍️ Quiero hacer un pedido</button><textarea id="waCustom" placeholder="Ej: Hola, ¿tienen el labial rosa de Yuya?" style="width:100%;padding:13px;border:2px solid #F0E9E9;border-radius:14px;margin-top:10px;min-height:70px"></textarea><button class="contact-btn" onclick="sendWa('custom')" style="background:#25D366;color:#fff">Enviar por WhatsApp 💚 →</button></div><div class="contact-card ig" id="contactIgCard"><div style="font-size:40px">📸</div><h2>Instagram @yahix.line</h2><p style="font-size:13px;color:var(--muted)">Síguenos para ver novedades ✨</p><button class="contact-btn" onclick="followIg()" style="background:#111;color:#fff">📸 Seguir @yahix.line</button><button class="contact-btn" onclick="sendIgDm()" style="background:#FDEAF6;color:#7A2A5A">💬 Mandar mensaje por Instagram</button><button class="contact-btn" onclick="shareStore()" style="background:#fff;border:2px solid #F0E9E9">💗 Compartir GlowLab</button></div></div>
+<div class="profile-switch-bar" id="profileSwitchBar"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><b>¿A qué perfil entras? 👤</b><button onclick="closeSwitchBar()" style="border:none;background:#FFF0F3;width:32px;height:32px;border-radius:50%;cursor:pointer">✕</button></div><div id="switchList"></div><button onclick="closeSwitchBar()" style="width:100%;padding:12px;border:none;border-radius:999px;background:#F5F0F0;margin-top:4px;cursor:pointer;font-weight:700">Cancelar</button></div>
+<div id="brandBottomNav" class="brand-bottom-nav"><button onclick="goHome()"><span>←</span>Marcas</button><button class="active"><span>🏠</span><span id="brandNavName">Yuya</span></button><button id="cartBtnBottom" onclick="openCart()"><span>🛍️</span>Bolsa</button><button onclick="showFavorites()"><span>⭐</span>Favoritos</button><button onclick="onProfileClick()"><span>👤</span>Perfil</button></div>
+<div id="profileBottomNav" class="profile-bottom-nav"><button onclick="closeProfile()"><span>←</span>Tienda</button><button onclick="openCart()"><span>🛍️</span>Bolsa</button><button class="active"><span>👤</span>Perfil</button><button onclick="closeProfile();showFavorites()"><span>⭐</span>Favoritos</button></div>
+<div id="contactBottomNav" class="contact-bottom-nav"><button onclick="closeContact()"><span>←</span>Tienda</button><button onclick="openCart()"><span>🛍️</span>Bolsa</button><button class="active"><span>💬</span>Contacto</button><button onclick="closeContact();onProfileClick()"><span>👤</span>Perfil</button></div>
+<nav class="bottom-nav" id="mainBottomNav"><button class="nav-item active" onclick="goHome();setNav(this)"><span>🏠</span>Inicio</button><button class="nav-item" onclick="focusSearch();setNav(this)"><span>🔍</span>Buscar</button><button class="nav-item" id="cartBtnMain" onclick="openCart();setNav(this)"><span>🛍️</span>Bolsa</button><button class="nav-item" onclick="showFavorites();setNav(this)"><span>⭐</span>Favoritos</button><button class="nav-item" onclick="onProfileClick();setNav(this)"><span>👤</span>Perfil</button></nav>
 <div class="overlay" id="overlay" onclick="closeCart()"></div>
-<div class="drawer" id="drawer"><div class="drawer-head"><b>Mi Bolsa 🛍️</b><button onclick="closeCart()" style="border:none;background:none;font-size:20px;cursor:pointer">✕</button></div>
-<div class="cart-items" id="cartItems"></div>
-<div class="drawer-foot"><div style="display:flex;justify-content:space-between;font-weight:800;margin-bottom:10px"><span>Total</span><span id="cartTotal">$0.00</span></div>
-<input id="clientNote" placeholder="Nota para tu pedido" style="width:100%;padding:11px;border:2px solid #F0E9E9;border-radius:12px;margin-bottom:10px">
-<button class="checkout" onclick="checkoutWhatsApp()">Pedir por WhatsApp 💚</button>
-<button class="checkout-ig" onclick="checkoutInstagram()">Pedir por Instagram 📸 @yahix.line</button>
-<button class="checkout2" onclick="checkoutLocal()">Guardar pedido en mi cuenta</button>
-<div class="orders-in-bag"><b>📦 Mis pedidos <span id="ordersOwner" style="font-weight:400;font-size:11px"></span></b><div id="orders" style="margin-top:6px">Aún no tienes pedidos.</div></div>
-</div></div>
-
+<div class="drawer" id="drawer"><div class="drawer-head"><b>Mi Bolsa 🛍️</b><button onclick="closeCart()" style="border:none;background:none;font-size:20px;cursor:pointer">✕</button></div><div class="cart-items" id="cartItems"></div><div class="drawer-foot"><div style="display:flex;justify-content:space-between;font-weight:800;margin-bottom:10px"><span>Total</span><span id="cartTotal">$0.00</span></div><label style="font-size:12px;font-weight:800;color:#B98A92">Nota para tu pedido</label><input id="clientNote" placeholder="Ej: Entregar sin envolver..." style="width:100%;padding:11px;border:2px solid #F0E9E9;border-radius:12px;margin:6px 0 12px"><button class="checkout2" onclick="checkoutLocal()">Guardar pedido en mi cuenta 💗</button><div class="orders-in-bag"><b>📦 Mis pedidos <span id="ordersOwner" style="font-weight:400;font-size:11px"></span></b><div id="orders" style="margin-top:6px">Aún no tienes pedidos.</div></div></div></div>
 <div class="toast" id="toast"></div>
-
 <script>
-function entrarTienda(){ var p=document.getElementById("portada"); if(p){ p.classList.add("hidden"); p.style.display="none"; } }
-function volverPortada(){ document.getElementById("perfilesBox").style.display="none"; document.getElementById("registroBox").style.display="none"; document.getElementById("portadaInicio").style.display="block"; }
-function irAperfiles(){ document.getElementById("portadaInicio").style.display="none"; document.getElementById("registroBox").style.display="none"; document.getElementById("perfilesBox").style.display="block"; renderPerfiles(); }
-function irAregistro(){ document.getElementById("perfilesBox").style.display="none"; document.getElementById("portadaInicio").style.display="none"; document.getElementById("registroBox").style.display="block"; }
-function cambiarPerfil(){ closeProfile(); closeSwitchBar(); var p=document.getElementById("portada"); p.classList.remove("hidden"); p.style.display="flex"; irAperfiles(); }
-const MY_WHATSAPP="522411712962"; const MY_INSTAGRAM="yahix.line";
+function entrarTienda(){var p=document.getElementById("portada");if(p){p.classList.add("hidden");p.style.display="none";}}
+function volverPortada(){document.getElementById("perfilesBox").style.display="none";document.getElementById("registroBox").style.display="none";document.getElementById("portadaInicio").style.display="block";}
+function irAperfiles(){document.getElementById("portadaInicio").style.display="none";document.getElementById("registroBox").style.display="none";document.getElementById("perfilesBox").style.display="block";renderPerfiles();}
+function irAregistro(){document.getElementById("perfilesBox").style.display="none";document.getElementById("portadaInicio").style.display="none";document.getElementById("registroBox").style.display="block";}
+const MY_WHATSAPP="522411712962";const MY_INSTAGRAM="yahix.line";
+const BRAND_BG={"Yuya":"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1200","Dior":"https://images.unsplash.com/photo-1541643600914-78b084683601?w=1200","Victoria's Secret":"https://images.unsplash.com/photo-1594035910387-fea47794261f?w=1200"};
 const initialProducts=[
-{id:101,name:"Labial Rosa Yuya",brand:"Yuya",description:"Tono rosa natural",price:18,oldPrice:24,category:"Maquillaje",sub:"Labiales",image:"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=600"},
-{id:102,name:"Rubor Yuya Rosa",brand:"Yuya",description:"Acabado natural",price:15,category:"Maquillaje",sub:"Rostro",image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600"},
-{id:103,name:"Paleta Yuya Tonos Cálidos",brand:"Yuya",description:"12 sombras",price:25,oldPrice:32,category:"Maquillaje",sub:"Pestañas y Ojos",image:"https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=600"},
-{id:104,name:"Máscara Pestañas Yuya",brand:"Yuya",description:"Volumen y alargado",price:16,category:"Maquillaje",sub:"Pestañas y Ojos",image:"https://images.unsplash.com/photo-1631214540242-3cd8a5b0b3b1?w=600"},
-{id:105,name:"Base Yuya Natural",brand:"Yuya",description:"Cobertura ligera para cara",price:22,category:"Maquillaje",sub:"Rostro",image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600"},
-{id:106,name:"Corrector Yuya",brand:"Yuya",description:"Cubre ojeras",price:14,category:"Maquillaje",sub:"Rostro",image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600"},
-{id:107,name:"Delineador Yuya Negro",brand:"Yuya",description:"Punta fina",price:12,category:"Maquillaje",sub:"Pestañas y Ojos",image:"https://images.unsplash.com/photo-1631214540242-3cd8a5b0b3b1?w=600"},
-{id:108,name:"Brillo Labial Yuya Gloss",brand:"Yuya",description:"Brillo rosita",price:13,oldPrice:17,category:"Maquillaje",sub:"Labiales",image:"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=600"},
-{id:109,name:"Polvo Compacto Yuya",brand:"Yuya",description:"Matifica cara",price:17,category:"Maquillaje",sub:"Rostro",image:"https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=600"},
-{id:110,name:"Sombras Yuya Nude",brand:"Yuya",description:"Tonos nude 8 colores",price:21,category:"Maquillaje",sub:"Pestañas y Ojos",image:"https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=600"},
-{id:111,name:"Serum Cara Yuya",brand:"Yuya",description:"Para cara • Hidratante",price:20,category:"Skincare",sub:"Cara",image:"https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?w=600"},
-{id:201,name:"Perfume Dior Floral",brand:"Dior",description:"Aroma floral 100ml",price:85,oldPrice:105,category:"Perfumes",sub:"Perfumes",image:"https://images.unsplash.com/photo-1541643600914-78b084683601?w=600"},
-{id:202,name:"Labial Dior Rojo",brand:"Dior",description:"Rojo icónico mate",price:42,category:"Maquillaje",sub:"Labiales",image:"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=600"},
-{id:203,name:"Perfume Dior Vainilla",brand:"Dior",description:"Dulce y elegante 50ml",price:78,oldPrice:95,category:"Perfumes",sub:"Perfumes",image:"https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600"},
-{id:204,name:"Base Dior Glow",brand:"Dior",description:"Piel luminosa cara",price:55,category:"Maquillaje",sub:"Rostro",image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600"},
-{id:205,name:"Paleta Dior Lujo",brand:"Dior",description:"Sombras neutras 5 colores",price:65,category:"Maquillaje",sub:"Pestañas y Ojos",image:"https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=600"},
-{id:206,name:"Rubor Dior Rosa",brand:"Dior",description:"Rosa suave cara",price:38,category:"Maquillaje",sub:"Rostro",image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600"},
-{id:207,name:"Máscara Dior Volumen",brand:"Dior",description:"Pestañas con volumen",price:35,category:"Maquillaje",sub:"Pestañas y Ojos",image:"https://images.unsplash.com/photo-1631214540242-3cd8a5b0b3b1?w=600"},
-{id:208,name:"Brillo Dior Lip Glow",brand:"Dior",description:"Brillo con color",price:36,oldPrice:42,category:"Maquillaje",sub:"Labiales",image:"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=600"},
-{id:209,name:"Delineador Dior",brand:"Dior",description:"Trazo preciso",price:30,category:"Maquillaje",sub:"Pestañas y Ojos",image:"https://images.unsplash.com/photo-1631214540242-3cd8a5b0b3b1?w=600"},
-{id:210,name:"Corrector Dior",brand:"Dior",description:"Alta cobertura cara",price:33,category:"Maquillaje",sub:"Rostro",image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600"},
-{id:211,name:"Crema Cara Dior",brand:"Dior",description:"Crema para cara hidratante",price:48,category:"Skincare",sub:"Cara",image:"https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600"},
-{id:301,name:"Body Mist VS Rosa",brand:"Victoria's Secret",description:"Aroma dulce 250ml",price:28,oldPrice:35,category:"Perfumes",sub:"Perfumes",image:"https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600"},
-{id:302,name:"Perfume VS Vainilla",brand:"Victoria's Secret",description:"Vainilla cálida 100ml",price:38,category:"Perfumes",sub:"Perfumes",image:"https://images.unsplash.com/photo-1541643600914-78b084683601?w=600"},
-{id:303,name:"Crema VS Cara y Cuerpo",brand:"Victoria's Secret",description:"Hidratante cara y cuerpo 200ml",price:22,category:"Skincare",sub:"Cara",image:"https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600"},
-{id:304,name:"Body Mist VS Floral",brand:"Victoria's Secret",description:"Floral fresco 250ml",price:28,category:"Perfumes",sub:"Perfumes",image:"https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600"},
-{id:305,name:"Labial VS Nude",brand:"Victoria's Secret",description:"Nude elegante",price:19,category:"Maquillaje",sub:"Labiales",image:"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=600"},
-{id:306,name:"Brillo VS Rosado",brand:"Victoria's Secret",description:"Brillo rosado destellos",price:16,category:"Maquillaje",sub:"Labiales",image:"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=600"},
-{id:307,name:"Paleta VS Tonos Rosa",brand:"Victoria's Secret",description:"Sombras rosas 10 colores",price:27,oldPrice:34,category:"Maquillaje",sub:"Pestañas y Ojos",image:"https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=600"},
-{id:308,name:"Rubor VS Coral",brand:"Victoria's Secret",description:"Coral natural cara",price:18,category:"Maquillaje",sub:"Rostro",image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600"},
-{id:309,name:"Perfume VS Noche",brand:"Victoria's Secret",description:"Aroma de noche 100ml",price:40,category:"Perfumes",sub:"Perfumes",image:"https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600"},
-{id:310,name:"Spray VS Coco",brand:"Victoria's Secret",description:"Coco dulce 250ml",price:26,category:"Perfumes",sub:"Perfumes",image:"https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600"},
-{id:311,name:"Máscara VS Pestañas",brand:"Victoria's Secret",description:"Pestañas largas",price:20,category:"Maquillaje",sub:"Pestañas y Ojos",image:"https://images.unsplash.com/photo-1631214540242-3cd8a5b0b3b1?w=600"}
+{id:101,name:"Labial Rosa Yuya",brand:"Yuya",description:"Tono rosa natural",price:18,oldPrice:24,category:"Maquillaje",sub:"Labiales",stock:10,image:"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=600"},
+{id:102,name:"Rubor Yuya Rosa",brand:"Yuya",description:"Acabado natural",price:15,category:"Maquillaje",sub:"Rostro",stock:10,image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600"},
+{id:103,name:"Paleta Yuya Tonos Cálidos",brand:"Yuya",description:"12 sombras",price:25,oldPrice:32,category:"Maquillaje",sub:"Pestañas y Ojos",stock:10,image:"https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=600"},
+{id:104,name:"Máscara Pestañas Yuya",brand:"Yuya",description:"Volumen y alargado",price:16,category:"Maquillaje",sub:"Pestañas y Ojos",stock:10,image:"https://images.unsplash.com/photo-1631214540242-3cd8a5b0b3b1?w=600"},
+{id:105,name:"Base Yuya Natural",brand:"Yuya",description:"Cobertura ligera para cara",price:22,category:"Maquillaje",sub:"Rostro",stock:10,image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600"},
+{id:106,name:"Corrector Yuya",brand:"Yuya",description:"Cubre ojeras",price:14,category:"Maquillaje",sub:"Rostro",stock:10,image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600"},
+{id:107,name:"Delineador Yuya Negro",brand:"Yuya",description:"Punta fina",price:12,category:"Maquillaje",sub:"Pestañas y Ojos",stock:10,image:"https://images.unsplash.com/photo-1631214540242-3cd8a5b0b3b1?w=600"},
+{id:108,name:"Brillo Labial Yuya Gloss",brand:"Yuya",description:"Brillo rosita",price:13,oldPrice:17,category:"Maquillaje",sub:"Labiales",stock:10,image:"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=600"},
+{id:109,name:"Polvo Compacto Yuya",brand:"Yuya",description:"Matifica cara",price:17,category:"Maquillaje",sub:"Rostro",stock:10,image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600"},
+{id:110,name:"Sombras Yuya Nude",brand:"Yuya",description:"Tonos nude 8 colores",price:21,category:"Maquillaje",sub:"Pestañas y Ojos",stock:10,image:"https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=600"},
+{id:111,name:"Serum Cara Yuya",brand:"Yuya",description:"Para cara • Hidratante",price:20,category:"Skincare",sub:"Cara",stock:10,image:"https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?w=600"},
+{id:201,name:"Perfume Dior Floral",brand:"Dior",description:"Aroma floral 100ml",price:85,oldPrice:105,category:"Perfumes",sub:"Perfumes",stock:10,image:"https://images.unsplash.com/photo-1541643600914-78b084683601?w=600"},
+{id:202,name:"Labial Dior Rojo",brand:"Dior",description:"Rojo icónico mate",price:42,category:"Maquillaje",sub:"Labiales",stock:10,image:"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=600"},
+{id:203,name:"Perfume Dior Vainilla",brand:"Dior",description:"Dulce y elegante 50ml",price:78,oldPrice:95,category:"Perfumes",sub:"Perfumes",stock:10,image:"https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600"},
+{id:204,name:"Base Dior Glow",brand:"Dior",description:"Piel luminosa cara",price:55,category:"Maquillaje",sub:"Rostro",stock:10,image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600"},
+{id:205,name:"Paleta Dior Lujo",brand:"Dior",description:"Sombras neutras 5 colores",price:65,category:"Maquillaje",sub:"Pestañas y Ojos",stock:10,image:"https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=600"},
+{id:206,name:"Rubor Dior Rosa",brand:"Dior",description:"Rosa suave cara",price:38,category:"Maquillaje",sub:"Rostro",stock:10,image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600"},
+{id:207,name:"Máscara Dior Volumen",brand:"Dior",description:"Pestañas con volumen",price:35,category:"Maquillaje",sub:"Pestañas y Ojos",stock:10,image:"https://images.unsplash.com/photo-1631214540242-3cd8a5b0b3b1?w=600"},
+{id:208,name:"Brillo Dior Lip Glow",brand:"Dior",description:"Brillo con color",price:36,oldPrice:42,category:"Maquillaje",sub:"Labiales",stock:10,image:"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=600"},
+{id:209,name:"Delineador Dior",brand:"Dior",description:"Trazo preciso",price:30,category:"Maquillaje",sub:"Pestañas y Ojos",stock:10,image:"https://images.unsplash.com/photo-1631214540242-3cd8a5b0b3b1?w=600"},
+{id:210,name:"Corrector Dior",brand:"Dior",description:"Alta cobertura cara",price:33,category:"Maquillaje",sub:"Rostro",stock:10,image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600"},
+{id:211,name:"Crema Cara Dior",brand:"Dior",description:"Crema para cara hidratante",price:48,category:"Skincare",sub:"Cara",stock:10,image:"https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600"},
+{id:301,name:"Body Mist VS Rosa",brand:"Victoria's Secret",description:"Aroma dulce 250ml",price:28,oldPrice:35,category:"Perfumes",sub:"Perfumes",stock:10,image:"https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600"},
+{id:302,name:"Perfume VS Vainilla",brand:"Victoria's Secret",description:"Vainilla cálida 100ml",price:38,category:"Perfumes",sub:"Perfumes",stock:10,image:"https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600"},
+{id:303,name:"Crema VS Cara y Cuerpo",brand:"Victoria's Secret",description:"Hidratante cara y cuerpo 200ml",price:22,category:"Skincare",sub:"Cara",stock:10,image:"https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600"},
+{id:304,name:"Body Mist VS Floral",brand:"Victoria's Secret",description:"Floral fresco 250ml",price:28,category:"Perfumes",sub:"Perfumes",stock:10,image:"https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600"},
+{id:305,name:"Labial VS Nude",brand:"Victoria's Secret",description:"Nude elegante",price:19,category:"Maquillaje",sub:"Labiales",stock:10,image:"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=600"},
+{id:306,name:"Brillo VS Rosado",brand:"Victoria's Secret",description:"Brillo rosado destellos",price:16,category:"Maquillaje",sub:"Labiales",stock:10,image:"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=600"},
+{id:307,name:"Paleta VS Tonos Rosa",brand:"Victoria's Secret",description:"Sombras rosas 10 colores",price:27,oldPrice:34,category:"Maquillaje",sub:"Pestañas y Ojos",stock:10,image:"https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=600"},
+{id:308,name:"Rubor VS Coral",brand:"Victoria's Secret",description:"Coral natural cara",price:18,category:"Maquillaje",sub:"Rostro",stock:10,image:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600"},
+{id:309,name:"Perfume VS Noche",brand:"Victoria's Secret",description:"Aroma de noche 100ml",price:40,category:"Perfumes",sub:"Perfumes",stock:10,image:"https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600"},
+{id:310,name:"Spray VS Coco",brand:"Victoria's Secret",description:"Coco dulce 250ml",price:26,category:"Perfumes",sub:"Perfumes",stock:10,image:"https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600"},
+{id:311,name:"Máscara VS Pestañas",brand:"Victoria's Secret",description:"Pestañas largas",price:20,category:"Maquillaje",sub:"Pestañas y Ojos",stock:10,image:"https://images.unsplash.com/photo-1631214540242-3cd8a5b0b3b1?w=600"}
 ];
-function leerLS(c,d){ try{ return JSON.parse(localStorage.getItem(c)||JSON.stringify(d)); }catch(e){ return d; } }
-let customProducts=leerLS("glow_custom",[]), favorites=leerLS("glow_fav",[]), perfiles=leerLS("glow_perfiles",[]), user=leerLS("glow_user",null);
-let ordersByProfile=leerLS("glow_orders_by_profile",{});
-let cartByProfile=leerLS("glow_cart_by_profile",{});
-try{
-  var oldCart=leerLS("glow_cart",[]);
-  if(oldCart.length && user && user.id && !cartByProfile[user.id]){ cartByProfile[user.id]=oldCart; localStorage.setItem("glow_cart_by_profile", JSON.stringify(cartByProfile)); localStorage.removeItem("glow_cart"); }
-  var oldOrders=leerLS("glow_orders",[]);
-  if(oldOrders.length && user && user.id && !ordersByProfile[user.id]){ ordersByProfile[user.id]=oldOrders; localStorage.setItem("glow_orders_by_profile", JSON.stringify(ordersByProfile)); localStorage.removeItem("glow_orders"); }
-}catch(e){}
-function getMyOrders(){ if(!user || !user.id) return []; return ordersByProfile[user.id] || []; }
-function getMyCart(){ if(!user || !user.id) return []; return cartByProfile[user.id] || []; }
-function setMyCart(newCart){ if(!user || !user.id) return; cartByProfile[user.id]=newCart; save(); }
-if(user && perfiles.length===0){ perfiles=[{id:Date.now(),name:user.name,phone:user.phone,instagram:user.instagram}]; }
-let products=initialProducts.concat(customProducts), currentBrand=null, brandCat="Todos", brandSub="Todos", transTimeout=null;
-let audioCtx=null, musicTimer=null;
-function playNote(freq, start, dur, vol, type){ try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==="suspended") audioCtx.resume(); var osc=audioCtx.createOscillator(), gain=audioCtx.createGain(); osc.type=type||"sine"; osc.frequency.value=freq; var t=audioCtx.currentTime+start; gain.gain.setValueAtTime(0, t); gain.gain.linearRampToValueAtTime(vol||0.1, t+0.03); gain.gain.exponentialRampToValueAtTime(0.001, t+dur); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(t); osc.stop(t+dur+0.05); }catch(e){} }
-function playTransitionMusic(brand){ try{ if(audioCtx && audioCtx.state==="suspended") audioCtx.resume(); }catch(e){} if(brand==="Yuya"){ [659.25, 783.99, 1046.5, 783.99, 880.0, 1046.5, 1318.5].forEach(function(f,i){ playNote(f, i*0.16, 0.5, 0.1, "sine"); }); } else if(brand==="Dior"){ [392.0, 493.88, 587.33, 783.99, 587.33, 440.0].forEach(function(f,i){ playNote(f, i*0.22, 0.8, 0.09, "triangle"); }); playNote(1567.98, 1.3, 0.5, 0.04, "sine"); } else { [523.25, 587.33, 659.25, 783.99, 659.25, 587.33, 783.99].forEach(function(f,i){ playNote(f, i*0.18, 0.6, 0.1, "sine"); }); playNote(1046.5, 1.2, 0.6, 0.05, "triangle"); } clearTimeout(musicTimer); musicTimer=setTimeout(function(){ try{ audioCtx && audioCtx.suspend && audioCtx.suspend(); }catch(e){} }, 1700); }
-function save(){ try{ localStorage.setItem("glow_custom",JSON.stringify(customProducts)); localStorage.setItem("glow_fav",JSON.stringify(favorites)); localStorage.setItem("glow_cart_by_profile",JSON.stringify(cartByProfile)); localStorage.setItem("glow_orders_by_profile",JSON.stringify(ordersByProfile)); localStorage.setItem("glow_perfiles",JSON.stringify(perfiles)); if(user) localStorage.setItem("glow_user",JSON.stringify(user)); }catch(e){} }
-function toast(m){ var t=document.getElementById("toast"); t.textContent=m; t.classList.add("show"); setTimeout(function(){ t.classList.remove("show"); },2200); }
-function renderPerfiles(){ var box=document.getElementById("listaPerfiles"); if(!perfiles.length){ box.innerHTML='<p style="text-align:center;color:#999;font-size:13px;margin-bottom:12px">Aún no tienes perfiles</p>'; return; } box.innerHTML=perfiles.map(function(p){ var n=(ordersByProfile[p.id]||[]).length; var c=(cartByProfile[p.id]||[]).reduce(function(s,x){ return s+x.qty; },0); return '<div class="perfil-card"><div class="perfil-avatar">'+(p.name?p.name.charAt(0).toUpperCase():"💗")+'</div><div style="flex:1"><b>'+p.name+'</b><br><span style="font-size:12px;color:#999">'+(p.instagram||"")+' • '+n+' pedidos • '+c+' en bolsa</span></div><button class="perfil-btn" onclick="entrarConPerfil('+p.id+')">Entrar →</button><button class="perfil-del" onclick="eliminarPerfil('+p.id+')">🗑️</button></div>'; }).join(""); }
-function entrarConPerfil(id){ var p=perfiles.find(function(x){ return x.id===id; }); if(!p) return; user=p; save(); updateWelcome(); renderOrders(); updateCartUI(); entrarTienda(); toast("Bienvenida, "+p.name+" 💗 - bolsa con "+getMyCart().reduce(function(s,x){ return s+x.qty; },0)+" cosas, "+getMyOrders().length+" pedidos"); }
-function crearPerfil(){ var n=document.getElementById("regNombre").value.trim(); var tel=document.getElementById("regTelefono").value.trim().replace(/\D/g,""); var ig=document.getElementById("regInstagram").value.trim(); if(!n||tel.length<10||!ig){ toast("Llena nombre, teléfono e Instagram 💗"); return; } if(ig.charAt(0)!=="@") ig="@"+ig; var nuevo={id:Date.now(),name:n,phone:tel,instagram:ig}; perfiles.push(nuevo); user=nuevo; if(!ordersByProfile[nuevo.id]) ordersByProfile[nuevo.id]=[]; if(!cartByProfile[nuevo.id]) cartByProfile[nuevo.id]=[]; save(); updateWelcome(); renderOrders(); updateCartUI(); entrarTienda(); toast("Bienvenida "+n+" 💗 - bolsa vacía y sin pedidos, todo nuevo"); }
-function eliminarPerfil(id){ if(!confirm("¿Eliminar este perfil, su bolsa y sus pedidos?")) return; perfiles=perfiles.filter(function(x){ return x.id!==id; }); delete ordersByProfile[id]; delete cartByProfile[id]; if(user&&user.id===id){ user=perfiles.length?perfiles[0]:null; if(!user) localStorage.removeItem("glow_user"); } save(); renderPerfiles(); renderOrders(); updateCartUI(); updateWelcome(); toast("Perfil, bolsa y pedidos eliminados"); }
-function eliminarPerfilActual(){ if(!user) return; eliminarPerfil(user.id); closeProfile(); if(!perfiles.length){ var p=document.getElementById("portada"); p.classList.remove("hidden"); p.style.display="flex"; irAperfiles(); } }
-let lastProfileTap=0, profileTapTimer=null;
-function onProfileClick(){ var now=Date.now(); if(now-lastProfileTap<350){ clearTimeout(profileTapTimer); lastProfileTap=0; quickSwitchProfile(); return; } lastProfileTap=now; profileTapTimer=setTimeout(function(){ if(Date.now()-lastProfileTap>=340){ lastProfileTap=0; openProfile(); } }, 350); }
-function quickSwitchProfile(){ if(perfiles.length<2){ openProfile(); return; } if(perfiles.length===2){ var otro=perfiles.find(function(p){ return user ? p.id!==user.id : true; }); if(!otro) return; user=otro; save(); updateWelcome(); renderOrders(); updateCartUI(); var pv=document.getElementById("profileView"); if(pv.classList.contains("open")) openProfile(); toast("Cambiaste a "+otro.name+" 💗 - bolsa con "+getMyCart().reduce(function(s,x){ return s+x.qty; },0)+" cosas, "+getMyOrders().length+" pedidos"); return; } showSwitchBar(); }
-function showSwitchBar(){ var bar=document.getElementById("profileSwitchBar"); var list=document.getElementById("switchList"); list.innerHTML=perfiles.map(function(p){ var isMe=user && p.id===user.id; var n=(ordersByProfile[p.id]||[]).length; var c=(cartByProfile[p.id]||[]).reduce(function(s,x){ return s+x.qty; },0); return '<button class="switch-profile-btn '+(isMe?'active':'')+'" onclick="switchToProfile('+p.id+')"><div class="switch-avatar">'+(p.name?p.name.charAt(0).toUpperCase():"💗")+'</div><div style="flex:1"><b>'+p.name+(isMe?' • Tú':'')+'</b><br><span style="font-size:12px;color:#999">'+(p.instagram||"")+' • '+n+' pedidos • '+c+' en bolsa</span></div><span style="font-size:16px">'+(isMe?'✅':'→')+'</span></button>'; }).join(""); bar.classList.add("show"); }
-function closeSwitchBar(){ document.getElementById("profileSwitchBar").classList.remove("show"); }
-function switchToProfile(id){ var p=perfiles.find(function(x){ return x.id===id; }); if(!p) return; user=p; save(); updateWelcome(); renderOrders(); updateCartUI(); closeSwitchBar(); var pv=document.getElementById("profileView"); if(pv.classList.contains("open")) openProfile(); toast("Cambiaste a "+p.name+" 💗 - bolsa con "+getMyCart().reduce(function(s,x){ return s+x.qty; },0)+" cosas"); }
-// ===== CONTACTO - WHATSAPP / INSTAGRAM ARRIBA =====
-let contactFrom="home";
-function openContact(type){
-  var cv=document.getElementById("contactView");
-  cv.style.display="block";
-  requestAnimationFrame(function(){ requestAnimationFrame(function(){ cv.classList.add("open"); }); });
-  document.body.classList.add("brand-open");
-  document.getElementById("mainBottomNav").classList.add("hidden-nav");
-  document.getElementById("brandBottomNav").classList.remove("show");
-  document.getElementById("profileBottomNav").classList.remove("show");
-  document.getElementById("contactBottomNav").classList.add("show");
-  document.getElementById("fabConseguir").classList.add("hidden-fab");
-  document.getElementById("contactTitle").textContent = type==="wa" ? "WhatsApp 💚" : "Instagram 📸";
-  // Muestra la tarjeta que tocaste primero
-  var wa=document.getElementById("contactWaCard"), ig=document.getElementById("contactIgCard");
-  if(type==="wa"){ wa.style.order="-1"; ig.style.order="1"; wa.scrollIntoView({behavior:"smooth"}); }
-  else { ig.style.order="-1"; wa.style.order="1"; ig.scrollIntoView({behavior:"smooth"}); }
-  updateCartUI();
-}
-function closeContact(){
-  var cv=document.getElementById("contactView");
-  cv.classList.remove("open");
-  setTimeout(function(){ cv.style.display="none"; }, 380);
-  document.body.classList.remove("brand-open");
-  document.getElementById("mainBottomNav").classList.remove("hidden-nav");
-  document.getElementById("contactBottomNav").classList.remove("show");
-  if(!currentBrand) document.getElementById("fabConseguir").classList.remove("hidden-fab");
-  if(currentBrand) document.getElementById("brandBottomNav").classList.add("show");
-  var pv=document.getElementById("profileView");
-  if(pv.classList.contains("open")) document.getElementById("profileBottomNav").classList.add("show");
-}
-function sendWa(tipo){
-  var name=user?user.name:"Glow Girl";
-  var insta=user&&user.instagram?user.instagram:"";
-  var msg="";
-  if(tipo==="duda") msg="Hola GlowLab 💗 Soy "+name+" "+insta+" Tengo una duda: ";
-  else if(tipo==="aclaracion") msg="Hola GlowLab 💗 Soy "+name+" "+insta+" Quiero una aclaración sobre mi pedido / producto: ";
-  else if(tipo==="pedido") msg="Hola GlowLab 💗 Soy "+name+" "+insta+" Quiero hacer un pedido: ";
-  else { var custom=document.getElementById("waCustom").value.trim(); if(!custom) return toast("Escribe tu mensaje 💗"); msg="Hola GlowLab 💗 Soy "+name+" "+insta+" "+custom; }
-  window.open("https://wa.me/"+MY_WHATSAPP+"?text="+encodeURIComponent(msg),"_blank");
-}
-function followIg(){ window.open("https://www.instagram.com/"+MY_INSTAGRAM+"/","_blank"); toast("Síguenos en @"+MY_INSTAGRAM+" 📸"); }
-function sendIgDm(){ var name=user?user.name:"Glow Girl"; copiarTexto("Hola GlowLab 💗 Soy "+name+" quiero preguntar sobre un pedido / producto"); toast("Mensaje copiado, pégalo en Instagram 📸"); window.open("https://www.instagram.com/"+MY_INSTAGRAM+"/","_blank"); }
-function openAddModal(){ document.getElementById("addModal").classList.add("show"); }
-function closeAddModal(){ document.getElementById("addModal").classList.remove("show"); }
-function openBrand(brand){
-  if(document.getElementById("brandTransition").classList.contains("show")) return;
-  playTransitionMusic(brand);
-  var imgs={ "Yuya":"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1000", "Dior":"https://images.unsplash.com/photo-1541643600914-78b084683601?w=1000", "Victoria's Secret":"https://images.unsplash.com/photo-1594035910387-fea47794261f?w=1000" };
-  var trans=document.getElementById("brandTransition");
-  document.getElementById("transImg").src=imgs[brand]||imgs["Yuya"];
-  var tb=document.getElementById("transBrand");
-  tb.className="trans-brand "+(brand==="Yuya"?"yuya":brand==="Dior"?"dior":"vs");
-  if(brand==="Victoria's Secret"){ tb.innerHTML='VICTORIA\'S<small>SECRET</small>'; } else if(brand==="Yuya"){ tb.textContent="yuya ♥"; } else { tb.textContent="DIOR"; }
-  document.getElementById("transSub").textContent = brand==="Yuya" ? "Bienvenida a Yuya" : brand==="Dior" ? "Bienvenida a Dior" : "Bienvenida a Victoria's Secret";
-  trans.classList.remove("salir"); trans.classList.add("show");
-  prepararBrandPage(brand);
-  clearTimeout(transTimeout);
-  transTimeout=setTimeout(function(){ trans.classList.add("salir"); setTimeout(function(){ trans.classList.remove("show","salir"); mostrarBrandPage(); }, 450); }, 1500);
-}
-function prepararBrandPage(brand){
-  currentBrand=brand; brandCat="Todos"; brandSub="Todos";
-  document.getElementById("brandSearch").value=""; document.getElementById("search").value="";
-  var bv=document.getElementById("brandView");
-  bv.style.display="block";
-  bv.className=(brand==="Yuya"?"yuya-bg":brand==="Dior"?"dior-bg":"vs-bg");
-  var top=document.getElementById("brandTop");
-  top.className="brand-top";
-  document.getElementById("brandTopLogo").textContent = brand==="Yuya" ? "yuya ♥" : brand==="Dior" ? "DIOR" : "VICTORIA'S SECRET";
-  var hero=document.getElementById("brandHero");
-  hero.className="brand-hero "+(brand==="Yuya"?"yuya":brand==="Dior"?"dior":"vs");
-  document.getElementById("brandHeroTitle").textContent = brand==="Yuya" ? "yuya ♥" : brand==="Dior" ? "DIOR" : "VICTORIA'S SECRET";
-  document.getElementById("brandHeroSub").textContent = brand==="Yuya" ? "Bienvenida a la tienda de Yuya 💗 Maquillaje, skincare para tu cara y perfumes." : brand==="Dior" ? "Bienvenida a la tienda de Dior 🖤 Lujo, perfumes y maquillaje." : "Bienvenida a la tienda de Victoria's Secret 💋 Body mist, perfumes y maquillaje.";
-  document.getElementById("brandNameLabel").textContent=brand.toUpperCase();
-  document.getElementById("brandFooterName").textContent=brand;
-  document.getElementById("brandNavName").textContent=brand==="Victoria's Secret"?"VS":brand;
-  var count=products.filter(function(p){ return p.brand===brand; }).length;
-  document.getElementById("brandHeroCount").textContent=count+" productos • Solo de "+brand;
-  renderBrandFilter(); renderSubFilter(); applyFilters();
-  bv.scrollTop=0;
-}
-function mostrarBrandPage(){ var bv=document.getElementById("brandView"); requestAnimationFrame(function(){ requestAnimationFrame(function(){ bv.classList.add("open"); }); }); document.body.classList.add("brand-open"); document.getElementById("mainBottomNav").classList.add("hidden-nav"); document.getElementById("brandBottomNav").classList.add("show"); document.getElementById("fabConseguir").classList.add("hidden-fab"); }
-function goHome(){ currentBrand=null; brandCat="Todos"; brandSub="Todos"; var bv=document.getElementById("brandView"); bv.classList.remove("open"); setTimeout(function(){ bv.style.display="none"; bv.style.willChange="auto"; }, 400); document.body.classList.remove("brand-open"); document.getElementById("mainBottomNav").classList.remove("hidden-nav"); document.getElementById("brandBottomNav").classList.remove("show"); document.getElementById("fabConseguir").classList.remove("hidden-fab"); updateCounts(); window.scrollTo({top:0,behavior:"smooth"}); }
-function renderBrandFilter(){ var cats=["Todos","Skincare","Perfumes","Maquillaje"]; document.getElementById("brandFilter2").innerHTML=cats.map(function(c){ var emoji=c==="Todos"?"💖":c==="Skincare"?"🧴":c==="Perfumes"?"🌸":"💄"; return '<button class="chip2 '+(brandCat===c?'active':'')+'" onclick="setBrandCat(\''+c+'\')">'+emoji+' '+c+'</button>'; }).join(""); }
-function renderSubFilter(){ var wrap=document.getElementById("subFilterWrap"); if(brandCat!=="Maquillaje"){ wrap.style.display="none"; return; } wrap.style.display="block"; var subs=["Todos","Labiales","Pestañas y Ojos","Rostro"]; document.getElementById("subFilter").innerHTML=subs.map(function(s){ var e=s==="Todos"?"✨":s==="Labiales"?"💋":s==="Pestañas y Ojos"?"👁️":"😊"; return '<button class="sub-chip '+(brandSub===s?'active':'')+'" onclick="setBrandSub(\''+s+'\')">'+e+' '+(s==="Todos"?"Todo maquillaje":s)+'</button>'; }).join(""); }
-function setBrandCat(c){ brandCat=c; brandSub="Todos"; renderBrandFilter(); renderSubFilter(); applyFilters(); }
-function setBrandSub(s){ brandSub=s; renderSubFilter(); applyFilters(); }
-function updateCounts(){ document.getElementById("countYuya").textContent=products.filter(function(p){ return p.brand==="Yuya"; }).length+" productos • Toca para entrar"; document.getElementById("countDior").textContent=products.filter(function(p){ return p.brand==="Dior"; }).length+" productos • Toca para entrar"; document.getElementById("countVS").textContent=products.filter(function(p){ return p.brand==="Victoria's Secret"; }).length+" productos • Toca para entrar"; }
-function copiarTexto(t){ try{ if(navigator.clipboard&&window.isSecureContext){ navigator.clipboard.writeText(t).catch(function(){}); } else { var ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); try{ document.execCommand("copy"); }catch(e){} document.body.removeChild(ta); } }catch(e){} }
-function getOrderText(){ var name=user?user.name:"Cliente GlowLab"; var note=document.getElementById("clientNote").value||"Sin nota"; var total=0; var cart=getMyCart(); var lines=cart.map(function(it){ var p=products.find(function(x){ return x.id===it.id; }); if(!p) return ""; total+=p.price*it.qty; return "• "+it.qty+" x "+p.name+" - $"+(p.price*it.qty).toFixed(2); }).join("\n"); return {texto:"Hola GlowLab 💗 Soy "+name+" "+(user&&user.instagram?user.instagram:"")+"\nQuiero este pedido:\n\n"+lines+"\n\nTotal $"+total.toFixed(2)+"\nNota:"+note, total:total}; }
-function checkoutWhatsApp(){ var cart=getMyCart(); if(!cart.length) return toast("Tu bolsa está vacía"); var o=getOrderText(); saveOrder(o.total); window.open("https://wa.me/"+MY_WHATSAPP+"?text="+encodeURIComponent(o.texto),"_blank"); setMyCart([]); updateCartUI(); closeCart(); toast("Pedido enviado 💚"); }
-function checkoutInstagram(){ var cart=getMyCart(); if(!cart.length) return toast("Tu bolsa está vacía"); var o=getOrderText(); saveOrder(o.total); copiarTexto(o.texto); toast("Pedido copiado, pégalo en Instagram 📸"); window.open("https://www.instagram.com/"+MY_INSTAGRAM+"/","_blank"); setMyCart([]); updateCartUI(); closeCart(); }
-function shareInstagram(){ copiarTexto("Mira mi tienda GlowLab 💗 "+window.location.href+" - @"+MY_INSTAGRAM); toast("Link copiado 📸"); window.open("https://www.instagram.com/"+MY_INSTAGRAM+"/","_blank"); }
-function checkoutLocal(){ var cart=getMyCart(); if(!cart.length) return toast("Bolsa vacía"); var total=cart.reduce(function(s,x){ var p=products.find(function(y){ return y.id===x.id; }); return s+(p?p.price*x.qty:0); },0); saveOrder(total); setMyCart([]); updateCartUI(); closeCart(); toast("Pedido guardado 💗"); }
-function saveOrder(total){ if(!user || !user.id){ toast("Entra a tu perfil para guardar tu pedido 💗"); return; } if(!ordersByProfile[user.id]) ordersByProfile[user.id]=[]; ordersByProfile[user.id].unshift({date:new Date().toLocaleString("es-MX"),total:total.toFixed(2),items:getMyCart().map(function(it){ var p=products.find(function(x){ return x.id===it.id; }); return it.qty+" x "+(p?p.name:""); }).join(", ")}); save(); renderOrders(); updateWelcome(); }
-function renderOrders(){ var el=document.getElementById("orders"); var owner=document.getElementById("ordersOwner"); if(owner) owner.textContent = user ? "• de "+user.name : "• sin perfil"; if(!el) return; var my=getMyOrders(); if(!my.length){ el.textContent = user ? "Aún no tienes pedidos, "+user.name+" 💗" : "Entra a tu perfil para ver tus pedidos."; return; } el.innerHTML=my.map(function(o){ return '<div style="padding:8px 0;border-bottom:1px solid #F0E9E9"><b>'+o.date+'</b> - $'+o.total+'<br><span style="color:#999">'+o.items+'</span></div>'; }).join(""); }
-function applyFilters(){ if(!currentBrand){ updateCounts(); return; } var q=(document.getElementById("brandSearch").value||"").toLowerCase().trim(); var list=products.filter(function(p){ if(p.brand!==currentBrand) return false; if(brandCat!=="Todos" && p.category!==brandCat) return false; if(brandCat==="Maquillaje" && brandSub!=="Todos" && p.sub!==brandSub) return false; return !q||(p.name+" "+p.brand+" "+p.description+" "+(p.sub||"")).toLowerCase().includes(q); }); document.getElementById("productsTitle").textContent = brandCat==="Todos" ? "Todos los productos • "+currentBrand : brandCat==="Maquillaje" && brandSub!=="Todos" ? brandSub+" • "+currentBrand : brandCat+" • "+currentBrand; renderProducts(list); }
-function cardHTML(p){ var oferta=p.oldPrice?'<span class="badge-offer">-'+Math.round((1-p.price/p.oldPrice)*100)+'% OFF</span>':''; var subTag=p.sub?'<span class="badge-sub">'+p.sub+'</span>':''; var fav=favorites.includes(p.id)?'selected':''; var estrella=favorites.includes(p.id)?'★':'☆'; var viejo=p.oldPrice?'<span class="old">$'+p.oldPrice+'</span>':''; var borrar=customProducts.some(function(x){ return x.id===p.id; })?'<button class="delete-button" onclick="deleteProduct('+p.id+')">Eliminar</button>':''; return '<div class="product">'+oferta+subTag+'<button class="favorite '+fav+'" onclick="toggleFavorite('+p.id+')">'+estrella+'</button><div class="product-image"><img src="'+p.image+'"></div><h3>'+p.name+'</h3><p class="desc">'+p.brand+' • '+p.description+'</p><div class="price-row"><span class="price">$'+p.price+'</span>'+viejo+'</div><button class="add-cart" onclick="addCart('+p.id+')">Agregar 🛍️</button>'+borrar+'</div>'; }
-function renderProducts(list){ var el=document.getElementById("products"); if(!list.length){ el.innerHTML='<p class="empty">No hay productos en este apartado 💗</p>'; return; } el.innerHTML=list.map(cardHTML).join(""); }
-function showAll(){ goHome(); }
-function toggleFavorite(id){ favorites=favorites.includes(id)?favorites.filter(function(x){ return x!==id; }):favorites.concat([id]); save(); if(currentBrand) applyFilters(); toast(favorites.includes(id) ? "Guardado en favoritos ⭐" : "Quitado de favoritos"); }
-function showFavorites(){ if(!currentBrand){ openBrand("Yuya"); } document.getElementById("productsTitle").textContent="Mis favoritos ⭐"; var list=products.filter(function(p){ return favorites.includes(p.id) && p.brand===currentBrand; }); renderProducts(list); }
-function addCart(id){ var cart=getMyCart(); var f=cart.find(function(x){ return x.id===id; }); if(f) f.qty++; else cart.push({id:id,qty:1}); setMyCart(cart); updateCartUI(); toast("Agregado a tu bolsa 💗"); openCart(); }
-function changeQty(id,d){ var cart=getMyCart(); var f=cart.find(function(x){ return x.id===id; }); if(!f) return; f.qty+=d; if(f.qty<=0) cart=cart.filter(function(x){ return x.id!==id; }); setMyCart(cart); updateCartUI(); }
-function removeFromCart(id){ var cart=getMyCart().filter(function(x){ return x.id!==id; }); setMyCart(cart); updateCartUI(); }
-function updateCartUI(){ var cart=getMyCart(); var count=cart.reduce(function(s,x){ return s+x.qty; },0); document.getElementById("cartCount").textContent=count; var cb=document.getElementById("cartCountBrand"); if(cb) cb.textContent=count; var cp=document.getElementById("cartCountProfile"); if(cp) cp.textContent=count; var cc=document.getElementById("cartCountContact"); if(cc) cc.textContent=count; var box=document.getElementById("cartItems"); if(!cart.length){ box.innerHTML='<p style="text-align:center;color:#999;padding:30px">Tu bolsa está vacía 💗 '+(user?user.name:"")+'</p>'; document.getElementById("cartTotal").textContent="$0.00"; return; } var total=0; box.innerHTML=cart.map(function(it){ var p=products.find(function(x){ return x.id===it.id; }); if(!p) return ""; total+=p.price*it.qty; return '<div class="cart-item"><img src="'+p.image+'"><div style="flex:1"><b>'+p.name+'</b><div style="font-size:12px;color:#999">$'+p.price+' c/u</div><div class="qty"><button onclick="changeQty('+p.id+',-1)">-</button><span>'+it.qty+'</span><button onclick="changeQty('+p.id+',1)">+</button><button onclick="removeFromCart('+p.id+')" style="border:none;background:none">🗑️</button></div></div><b>$'+(p.price*it.qty).toFixed(2)+'</b></div>'; }).join(""); document.getElementById("cartTotal").textContent="$"+total.toFixed(2); }
-function openCart(){ updateCartUI(); renderOrders(); document.getElementById("drawer").classList.add("open"); document.getElementById("overlay").classList.add("show"); }
-function closeCart(){ document.getElementById("drawer").classList.remove("open"); document.getElementById("overlay").classList.remove("show"); }
-var selectedImage=""; document.getElementById("image").addEventListener("change", function(e){ var file=e.target.files[0]; if(!file) return; var r=new FileReader(); r.onload=function(ev){ selectedImage=ev.target.result; document.getElementById("preview").src=selectedImage; document.getElementById("preview").style.display="block"; }; r.readAsDataURL(file); });
-document.getElementById("productForm").addEventListener("submit", function(e){ e.preventDefault(); if(!selectedImage) return toast("Sube tu foto de referencia 📷"); var marca=document.getElementById("brandSelect").value || document.getElementById("brand").value.trim(); var np={id:Date.now(),name:document.getElementById("name").value.trim(),brand:marca||"GlowLab",description:document.getElementById("description").value.trim(),price:Number(document.getElementById("price").value),oldPrice:Number(document.getElementById("oldPrice").value)||null,category:document.getElementById("category").value,sub:document.getElementById("subSelect").value||"Rostro",image:selectedImage}; customProducts.push(np); try{ save(); }catch(err){ customProducts.pop(); return toast("Foto muy pesada"); } products=initialProducts.concat(customProducts); e.target.reset(); selectedImage=""; document.getElementById("preview").style.display="none"; closeAddModal(); goHome(); toast("Producto conseguido 💗 Ya está en su marca"); });
-function deleteProduct(id){ if(!confirm("¿Eliminar?")) return; customProducts=customProducts.filter(function(p){ return p.id!==id; }); products=initialProducts.concat(customProducts); save(); applyFilters(); }
-function openProfile(){
-  var pv=document.getElementById("profileView");
-  pv.style.display="block";
-  requestAnimationFrame(function(){ requestAnimationFrame(function(){ pv.classList.add("open"); }); });
-  document.body.classList.add("brand-open");
-  document.getElementById("mainBottomNav").classList.add("hidden-nav");
-  document.getElementById("brandBottomNav").classList.remove("show");
-  document.getElementById("profileBottomNav").classList.add("show");
-  document.getElementById("fabConseguir").classList.add("hidden-fab");
-  if(user){
-    document.getElementById("userName").value=user.name||"";
-    document.getElementById("userPhone").value=user.phone||"";
-    document.getElementById("userInsta").value=user.instagram||"";
-    document.getElementById("profileAvatarBig").textContent=user.name?user.name.charAt(0).toUpperCase():"💗";
-    document.getElementById("profileNameBig").textContent=user.name;
-    document.getElementById("profileInfoBig").textContent="📱 "+user.phone+" • 📸 "+(user.instagram||"");
-    document.getElementById("statOrders").textContent=getMyOrders().length;
-    document.getElementById("statCart").textContent=getMyCart().reduce(function(s,x){ return s+x.qty; },0);
-    document.getElementById("statFav").textContent=favorites.length;
-  } else {
-    document.getElementById("profileNameBig").textContent="Glow Girl";
-    document.getElementById("profileInfoBig").textContent="Aún no tienes perfil activo";
-    document.getElementById("statOrders").textContent="0";
-    document.getElementById("statCart").textContent="0";
-    document.getElementById("statFav").textContent=favorites.length;
-  }
-}
-function closeProfile(){
-  var pv=document.getElementById("profileView");
-  pv.classList.remove("open");
-  setTimeout(function(){ pv.style.display="none"; }, 380);
-  document.body.classList.remove("brand-open");
-  document.getElementById("mainBottomNav").classList.remove("hidden-nav");
-  document.getElementById("profileBottomNav").classList.remove("show");
-  if(!currentBrand) document.getElementById("fabConseguir").classList.remove("hidden-fab");
-  if(currentBrand) document.getElementById("brandBottomNav").classList.add("show");
-}
-function saveUser(){ var n=document.getElementById("userName").value.trim(); var tel=document.getElementById("userPhone").value.trim().replace(/\D/g,""); var ig=document.getElementById("userInsta").value.trim(); if(!n||tel.length<10||!ig){ toast("Llena nombre, teléfono e Instagram 💗"); return; } if(ig.charAt(0)!=="@") ig="@"+ig; if(user){ user.name=n; user.phone=tel; user.instagram=ig; var idx=perfiles.findIndex(function(x){ return x.id===user.id; }); if(idx>=0) perfiles[idx]=user; } else { user={id:Date.now(),name:n,phone:tel,instagram:ig}; perfiles.push(user); if(!ordersByProfile[user.id]) ordersByProfile[user.id]=[]; if(!cartByProfile[user.id]) cartByProfile[user.id]=[]; } save(); updateWelcome(); renderOrders(); updateCartUI(); openProfile(); toast("Guardado 💗"); }
-function updateWelcome(){ if(user){ document.getElementById("welcomeTitle").innerHTML=user.name+" 💗<br><span>Hola Glow Girl</span>"; document.getElementById("welcomeSub").innerHTML="📸 "+user.instagram+" • tu glow, tu laboratorio • "+getMyOrders().length+" pedidos"; } else { document.getElementById("welcomeTitle").innerHTML="Hola, Glow Girl 💗<br><span>tu glow, tu laboratorio.</span>"; } }
-function shareStore(){ window.open("https://wa.me/?text="+encodeURIComponent("Mira mi tienda GlowLab 💗 "+window.location.href),"_blank"); }
-function focusSearch(){ if(currentBrand){ document.getElementById("brandSearch").focus(); return; } document.getElementById("search").focus(); window.scrollTo({top:0,behavior:"smooth"}); }
-function setNav(el){ document.querySelectorAll(".nav-item").forEach(function(n){ n.classList.remove("active"); }); el.classList.add("active"); }
-updateCounts(); updateCartUI(); renderOrders(); updateWelcome();
+function leerLS(c,d){try{return JSON.parse(localStorage.getItem(c)||JSON.stringify(d));}catch(e){return d;}}
+let customProducts=leerLS("glow_custom",[]),favorites=leerLS("glow_fav",[]),perfiles=leerLS("glow_perfiles",[]),user=leerLS("glow_user",null);
+let ordersByProfile=leerLS("glow_orders_by_profile",{}),cartByProfile=leerLS("glow_cart_by_profile",{}),stockMap=leerLS("glow_stock",{});
+function getStock(p){if(!p)return 0;if(stockMap[p.id]!==undefined)return stockMap[p.id];if(p.stock!==undefined)return p.stock;return 10;}
+function setStock(id,c){stockMap[id]=Math.max(0,c);try{localStorage.setItem("glow_stock",JSON.stringify(stockMap));}catch(e){}}
+function getQtyInCart(id){var c=getMyCart();var it=c.find(function(x){return x.id===id;});return it?it.qty:0;}
+function getDisponible(p){return Math.max(0,getStock(p)-getQtyInCart(p.id));}
+function getMyOrders(){if(!user||!user.id)return [];return ordersByProfile[user.id]||[];}
+function getMyCart(){if(!user||!user.id)return [];return cartByProfile[user.id]||[];}
+function setMyCart(n){if(!user||!user.id)return;cartByProfile[user.id]=n;save();}
+if(user&&perfiles.length===0){perfiles=[{id:Date.now(),name:user.name,phone:user.phone,instagram:user.instagram}];}
+let products=initialProducts.concat(customProducts),currentBrand=null,brandCat="Todos",brandSub="Todos",transTimeout=null;
+let audioCtx=null,musicTimer=null;
+function playNote(f,s,d,v,t){try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();var o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=t||"sine";o.frequency.value=f;var tm=audioCtx.currentTime+s;g.gain.setValueAtTime(0,tm);g.gain.linearRampToValueAtTime(v||0.1,tm+0.03);g.gain.exponentialRampToValueAtTime(0.001,tm+d);o.connect(g);g.connect(audioCtx.destination);o.start(tm);o.stop(tm+d+0.05);}catch(e){}}
+function playTransitionMusic(b){try{if(audioCtx&&audioCtx.state==="suspended")audioCtx.resume();}catch(e){}if(b==="Yuya"){[[523.25,0],[659.25,.14],[783.99,.28],[659.25,.42],[880,.56],[1046.5,.7],[880,.84],[1046.5,.98],[1318.5,1.12]].forEach(function(n){playNote(n[0],n[1],.35,.11,"sine");});}else if(b==="Dior"){[[329.63,0],[392,.3],[440,.6],[523.25,.9],[659.25,1.2],[523.25,1.5]].forEach(function(n){playNote(n[0],n[1],1,.09,"triangle");});}else{[[440,0],[493.88,.22],[587.33,.44],[659.25,.66],[587.33,.88],[783.99,1.1],[659.25,1.32]].forEach(function(n){playNote(n[0],n[1],.6,.1,"sine");});}clearTimeout(musicTimer);musicTimer=setTimeout(function(){try{audioCtx&&audioCtx.suspend&&audioCtx.suspend();}catch(e){}},2200);}
+function flyToBag(src,btn){try{var el=btn?btn.closest(".product"):null;var im=el?el.querySelector(".product-image img"):null;var sr=im?im.getBoundingClientRect():(btn?btn.getBoundingClientRect():{left:innerWidth/2,top:innerHeight/2});var bag=document.getElementById("cartBtnBottom");if(!bag||!bag.offsetParent)bag=document.getElementById("cartBtnMain");if(!bag||!bag.offsetParent)bag=document.getElementById("cartBtnBrand");if(!bag)return;var er=bag.getBoundingClientRect();var f=document.createElement("img");f.src=src;f.className="fly-img";f.style.left=sr.left+"px";f.style.top=sr.top+"px";f.style.width="80px";f.style.height="80px";document.body.appendChild(f);requestAnimationFrame(function(){requestAnimationFrame(function(){f.style.left=(er.left+10)+"px";f.style.top=(er.top+10)+"px";f.style.width="44px";f.style.height="44px";f.style.opacity=".35";f.style.transform="rotate(18deg) scale(.7)";});});setTimeout(function(){f.remove();bag.classList.remove("bag-bump");void bag.offsetWidth;bag.classList.add("bag-bump");setTimeout(function(){bag.classList.remove("bag-bump");},500);},780);}catch(e){}}
+function save(){try{localStorage.setItem("glow_custom",JSON.stringify(customProducts));localStorage.setItem("glow_fav",JSON.stringify(favorites));localStorage.setItem("glow_cart_by_profile",JSON.stringify(cartByProfile));localStorage.setItem("glow_orders_by_profile",JSON.stringify(ordersByProfile));localStorage.setItem("glow_perfiles",JSON.stringify(perfiles));localStorage.setItem("glow_stock",JSON.stringify(stockMap));if(user)localStorage.setItem("glow_user",JSON.stringify(user));}catch(e){}}
+function toast(m){var t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(function(){t.classList.remove("show");},2200);}
+function avatarHTML(p){if(p&&p.avatar)return '<img src="'+p.avatar+'">';return p&&p.name?p.name.charAt(0).toUpperCase():"💗";}
+function renderPerfiles(){var box=document.getElementById("listaPerfiles");if(!perfiles.length){box.innerHTML='<p style="text-align:center;color:#999;font-size:13px">Aún no tienes perfiles</p>';return;}box.innerHTML=perfiles.map(function(p){return '<div class="perfil-card"><div class="perfil-avatar">'+avatarHTML(p)+'</div><div style="flex:1"><b>'+p.name+'</b><br><span style="font-size:12px;color:#999">'+(p.instagram||"")+'</span></div><button class="perfil-btn" onclick="entrarConPerfil('+p.id+')">Entrar →</button><button class="perfil-del" onclick="eliminarPerfil('+p.id+')">🗑️</button></div>';}).join("");}
+function entrarConPerfil(id){var p=perfiles.find(function(x){return x.id===id;});if(!p)return;user=p;save();updateWelcome();renderOrders();updateCartUI();entrarTienda();toast("Bienvenida, "+p.name+" 💗");}
+function crearPerfil(){var n=document.getElementById("regNombre").value.trim();var tel=document.getElementById("regTelefono").value.trim().replace(/\D/g,"");var ig=document.getElementById("regInstagram").value.trim();if(!n||tel.length<10||!ig){toast("Llena nombre, teléfono e Instagram 💗");return;}if(ig.charAt(0)!=="@")ig="@"+ig;var nuevo={id:Date.now(),name:n,phone:tel,instagram:ig,avatar:""};perfiles.push(nuevo);user=nuevo;if(!ordersByProfile[nuevo.id])ordersByProfile[nuevo.id]=[];if(!cartByProfile[nuevo.id])cartByProfile[nuevo.id]=[];save();updateWelcome();renderOrders();updateCartUI();entrarTienda();toast("Bienvenida "+n+" 💗");}
+function eliminarPerfil(id){if(!confirm("¿Eliminar este perfil, su bolsa y sus pedidos?"))return;perfiles=perfiles.filter(function(x){return x.id!==id;});delete ordersByProfile[id];delete cartByProfile[id];if(user&&user.id===id){user=perfiles.length?perfiles[0]:null;if(!user)localStorage.removeItem("glow_user");}save();renderPerfiles();renderOrders();updateCartUI();updateWelcome();}
+function eliminarPerfilActual(){if(!user)return;eliminarPerfil(user.id);closeProfile();if(!perfiles.length){var p=document.getElementById("portada");p.classList.remove("hidden");p.style.display="flex";irAperfiles();}}
+function cambiarFotoPerfil(e){var f=e.target.files[0];if(!f||!user)return;var r=new FileReader();r.onload=function(ev){user.avatar=ev.target.result;var idx=perfiles.findIndex(function(x){return x.id===user.id;});if(idx>=0)perfiles[idx].avatar=user.avatar;save();updateWelcome();openProfile();toast("Foto actualizada 💗");};r.readAsDataURL(f);}
+let lastProfileTap=0,profileTapTimer=null;
+function onProfileClick(){var now=Date.now();if(now-lastProfileTap<350){clearTimeout(profileTapTimer);lastProfileTap=0;quickSwitchProfile();return;}lastProfileTap=now;profileTapTimer=setTimeout(function(){if(Date.now()-lastProfileTap>=340){lastProfileTap=0;openProfile();}},350);}
+function quickSwitchProfile(){if(perfiles.length<2){openProfile();return;}if(perfiles.length===2){var otro=perfiles.find(function(p){return user?p.id!==user.id:true;});if(!otro)return;user=otro;save();updateWelcome();renderOrders();updateCartUI();var pv=document.getElementById("profileView");if(pv.classList.contains("open"))openProfile();toast("Cambiaste a "+otro.name+" 💗");return;}showSwitchBar();}
+function showSwitchBar(){var bar=document.getElementById("profileSwitchBar");var list=document.getElementById("switchList");list.innerHTML=perfiles.map(function(p){var isMe=user&&p.id===user.id;return '<button class="switch-profile-btn '+(isMe?'active':'')+'" onclick="switchToProfile('+p.id+')"><div class="switch-avatar">'+avatarHTML(p)+'</div><div style="flex:1"><b>'+p.name+(isMe?' • Tú':'')+'</b><br><span style="font-size:12px;color:#999">'+(p.instagram||"")+'</span></div></button>';}).join("");bar.classList.add("show");}
+function closeSwitchBar(){document.getElementById("profileSwitchBar").classList.remove("show");}
+function switchToProfile(id){var p=perfiles.find(function(x){return x.id===id;});if(!p)return;user=p;save();updateWelcome();renderOrders();updateCartUI();closeSwitchBar();var pv=document.getElementById("profileView");if(pv.classList.contains("open"))openProfile();toast("Cambiaste a "+p.name+" 💗");}
+function openProfile(){if(!user){irAperfiles();var p=document.getElementById("portada");p.classList.remove("hidden");p.style.display="flex";return;}var pv=document.getElementById("profileView");pv.style.display="block";requestAnimationFrame(function(){pv.classList.add("open");});document.body.classList.add("brand-open");document.getElementById("mainBottomNav").classList.add("hidden-nav");document.getElementById("brandBottomNav").classList.remove("show");document.getElementById("profileBottomNav").classList.add("show");document.getElementById("fabConseguir").classList.add("hidden-fab");updateWelcome();updateCartUI();}
+function closeProfile(){var pv=document.getElementById("profileView");pv.classList.remove("open");setTimeout(function(){pv.style.display="none";},380);document.body.classList.remove("brand-open");document.getElementById("mainBottomNav").classList.remove("hidden-nav");document.getElementById("profileBottomNav").classList.remove("show");if(!currentBrand)document.getElementById("fabConseguir").classList.remove("hidden-fab");if(currentBrand)document.getElementById("brandBottomNav").classList.add("show");}
+function updateWelcome(){if(!user)return;document.getElementById("welcomeTitle").innerHTML="Hola, "+user.name+" 💗<br><span>tu glow, tu laboratorio.</span>";document.getElementById("profileNameBig").textContent=user.name;document.getElementById("profileInfoBig").textContent=user.instagram||"";var av=document.getElementById("profileAvatarBig");if(user.avatar){av.innerHTML='<img src="'+user.avatar+'"><span class="avatar-plus">+</span>';}else{av.innerHTML='💗<span class="avatar-plus">+</span>';}document.getElementById("userName").value=user.name||"";document.getElementById("userPhone").value=user.phone||"";document.getElementById("userInsta").value=user.instagram||"";}
+function saveUser(){if(!user)return;var n=document.getElementById("userName").value.trim();var tel=document.getElementById("userPhone").value.trim();var ig=document.getElementById("userInsta").value.trim();if(!n)return toast("Pon tu nombre 💗");if(ig&&ig.charAt(0)!=="@")ig="@"+ig;user.name=n;user.phone=tel;user.instagram=ig;var idx=perfiles.findIndex(function(x){return x.id===user.id;});if(idx>=0)perfiles[idx]=user;save();updateWelcome();renderOrders();renderPerfiles();toast("Guardado 💗");}
+function openContact(type){var cv=document.getElementById("contactView");cv.style.display="block";requestAnimationFrame(function(){cv.classList.add("open");});document.body.classList.add("brand-open");document.getElementById("mainBottomNav").classList.add("hidden-nav");document.getElementById("brandBottomNav").classList.remove("show");document.getElementById("profileBottomNav").classList.remove("show");document.getElementById("contactBottomNav").classList.add("show");document.getElementById("fabConseguir").classList.add("hidden-fab");document.getElementById("contactTitle").textContent=type==="wa"?"WhatsApp 💚":"Instagram 📸";updateCartUI();}
+function closeContact(){var cv=document.getElementById("contactView");cv.classList.remove("open");setTimeout(function(){cv.style.display="none";},380);document.body.classList.remove("brand-open");document.getElementById("mainBottomNav").classList.remove("hidden-nav");document.getElementById("contactBottomNav").classList.remove("show");if(!currentBrand)document.getElementById("fabConseguir").classList.remove("hidden-fab");if(currentBrand)document.getElementById("brandBottomNav").classList.add("show");}
+function sendWa(tipo){var name=user?user.name:"Glow Girl";var insta=user&&user.instagram?user.instagram:"";var msg="";if(tipo==="duda")msg="Hola GlowLab 💗 Soy "+name+" "+insta+" Tengo una duda: ";else if(tipo==="aclaracion")msg="Hola GlowLab 💗 Soy "+name+" "+insta+" Quiero una aclaración: ";else if(tipo==="pedido")msg="Hola GlowLab 💗 Soy "+name+" "+insta+" Quiero hacer un pedido: ";else{var custom=document.getElementById("waCustom").value.trim();if(!custom)return toast("Escribe tu mensaje 💗");msg="Hola GlowLab 💗 Soy "+name+" "+insta+" "+custom;}window.open("https://wa.me/"+MY_WHATSAPP+"?text="+encodeURIComponent(msg),"_blank");}
+function followIg(){window.open("https://www.instagram.com/"+MY_INSTAGRAM+"/","_blank");}
+function sendIgDm(){var name=user?user.name:"Glow Girl";try{navigator.clipboard.writeText("Hola GlowLab 💗 Soy "+name+" quiero preguntar sobre un pedido");}catch(e){}toast("Mensaje copiado, pégalo en Instagram 📸");window.open("https://www.instagram.com/"+MY_INSTAGRAM+"/","_blank");}
+function shareStore(){try{navigator.clipboard.writeText("Mira mi tienda GlowLab 💗 "+window.location.href+" - @"+MY_INSTAGRAM);}catch(e){}toast("Link copiado 💗");}
+function openAddModal(){document.getElementById("addModal").classList.add("show");}
+function closeAddModal(){document.getElementById("addModal").classList.remove("show");}
+function openBrand(brand){if(document.getElementById("brandTransition").classList.contains("show"))return;playTransitionMusic(brand);var trans=document.getElementById("brandTransition");document.getElementById("transImg").src=BRAND_BG[brand]||BRAND_BG["Yuya"];var tb=document.getElementById("transBrand");tb.className="trans-brand "+(brand==="Yuya"?"yuya":brand==="Dior"?"dior":"vs");if(brand==="Victoria's Secret"){tb.innerHTML='VICTORIA\'S<small>SECRET</small>';}else if(brand==="Yuya"){tb.textContent="yuya ♥";}else{tb.textContent="DIOR";}document.getElementById("transSub").textContent=brand==="Yuya"?"Bienvenida a Yuya":brand==="Dior"?"Bienvenida a Dior":"Bienvenida a Victoria's Secret";trans.classList.remove("salir");trans.classList.add("show");prepararBrandPage(brand);clearTimeout(transTimeout);transTimeout=setTimeout(function(){trans.classList.add("salir");setTimeout(function(){trans.classList.remove("show","salir");var second=document.getElementById("secondTransition");second.className=brand==="Yuya"?"yuya":brand==="Dior"?"dior":"vs";second.classList.add("show");document.getElementById("secondLogo").textContent=brand==="Yuya"?"yuya ♥":brand==="Dior"?"DIOR":"VICTORIA'S SECRET";document.getElementById("secondSub").textContent=brand==="Yuya"?"Abriendo maquillajes de Yuya... 💄":brand==="Dior"?"Abriendo lujo de Dior... 🖤":"Abriendo Victoria's Secret... 💋";mostrarBrandPage();setTimeout(function(){second.classList.add("salir");setTimeout(function(){second.classList.remove("show","salir");},400);},750);},450);},1500);}
+function prepararBrandPage(brand){currentBrand=brand;brandCat="Todos";brandSub="Todos";document.getElementById("brandSearch").value="";document.getElementById("search").value="";var bv=document.getElementById("brandView");bv.style.display="block";bv.className=brand==="Yuya"?"yuya-bg":brand==="Dior"?"dior-bg":"vs-bg";bv.style.backgroundImage="url('"+BRAND_BG[brand]+"')";document.getElementById("brandTopLogo").textContent=brand==="Yuya"?"yuya ♥":brand==="Dior"?"DIOR":"VICTORIA'S SECRET";var hero=document.getElementById("brandHero");hero.className="brand-hero "+(brand==="Yuya"?"yuya":brand==="Dior"?"dior":"vs");document.getElementById("brandHeroTitle").textContent=brand==="Yuya"?"yuya ♥":brand==="Dior"?"DIOR":"VICTORIA'S SECRET";document.getElementById("brandHeroSub").textContent=brand==="Yuya"?"Bienvenida a la tienda de Yuya 💗 Maquillaje, skincare para tu cara y perfumes.":brand==="Dior"?"Bienvenida a la tienda de Dior 🖤 Lujo, perfumes y maquillaje.":"Bienvenida a la tienda de Victoria's Secret 💋 Body mist, perfumes y maquillaje.";document.getElementById("brandNameLabel").textContent=brand.toUpperCase();document.getElementById("brandFooterName").textContent=brand;document.getElementById("brandNavName").textContent=brand==="Victoria's Secret"?"VS":brand;var count=products.filter(function(p){return p.brand===brand;}).length;document.getElementById("brandHeroCount").textContent=count+" productos • Solo de "+brand;renderBrandFilter();renderSubFilter();applyFilters();bv.scrollTop=0;}
+function mostrarBrandPage(){var bv=document.getElementById("brandView");bv.style.display="block";bv.style.opacity="0";requestAnimationFrame(function(){requestAnimationFrame(function(){bv.classList.add("open");bv.style.opacity="1";bv.style.transition="opacity .3s";});});document.body.classList.add("brand-open");document.getElementById("mainBottomNav").classList.add("hidden-nav");document.getElementById("brandBottomNav").classList.add("show");document.getElementById("fabConseguir").classList.add("hidden-fab");}
+function goHome(){currentBrand=null;brandCat="Todos";brandSub="Todos";var bv=document.getElementById("brandView");bv.classList.remove("open");setTimeout(function(){bv.style.display="none";},400);document.body.classList.remove("brand-open");document.getElementById("mainBottomNav").classList.remove("hidden-nav");document.getElementById("brandBottomNav").classList.remove("show");document.getElementById("fabConseguir").classList.remove("hidden-fab");updateCounts();window.scrollTo({top:0,behavior:"smooth"});}
+function renderBrandFilter(){var cats=["Todos","Skincare","Perfumes","Maquillaje"];document.getElementById("brandFilter2").innerHTML=cats.map(function(c){var emoji=c==="Todos"?"💖":c==="Skincare"?"🧴":c==="Perfumes"?"🌸":"💄";var lista=c==="Todos"?products.filter(function(p){return p.brand===currentBrand;}):products.filter(function(p){return p.brand===currentBrand&&p.category===c;});return '<button class="chip2 '+(brandCat===c?'active':'')+'" onclick="setBrandCat(\''+c+'\')">'+emoji+' '+c+' ('+lista.length+')</button>';}).join("");}
+function renderSubFilter(){var wrap=document.getElementById("subFilterWrap");if(brandCat!=="Maquillaje"){wrap.style.display="none";return;}wrap.style.display="block";var subs=["Todos","Labiales","Pestañas y Ojos","Rostro"];document.getElementById("subFilter").innerHTML=subs.map(function(s){var e=s==="Todos"?"✨":s==="Labiales"?"💋":s==="Pestañas y Ojos"?"👁️":"😊";var lista=s==="Todos"?products.filter(function(p){return p.brand===currentBrand&&p.category==="Maquillaje";}):products.filter(function(p){return p.brand===currentBrand&&p.category==="Maquillaje"&&p.sub===s;});return '<button class="sub-chip '+(brandSub===s?'active':'')+'" onclick="setBrandSub(\''+s+'\')">'+e+' '+(s==="Todos"?"Todo maquillaje":s)+' ('+lista.length+')</button>';}).join("");}
+function setBrandCat(c){brandCat=c;brandSub="Todos";renderBrandFilter();renderSubFilter();applyFilters();}
+function setBrandSub(s){brandSub=s;renderSubFilter();applyFilters();}
+function updateCounts(){document.getElementById("countYuya").textContent=products.filter(function(p){return p.brand==="Yuya";}).length+" productos • Toca para entrar";document.getElementById("countDior").textContent=products.filter(function(p){return p.brand==="Dior";}).length+" productos • Toca para entrar";document.getElementById("countVS").textContent=products.filter(function(p){return p.brand==="Victoria's Secret";}).length+" productos • Toca para entrar";}
+let pagoActual={metodo:"Efectivo",entrega:"Entrega a domicilio",datos:null};
+function selPago(m,el){pagoActual.metodo=m;document.querySelectorAll("#payMethods .pay-chip").forEach(function(b){b.classList.remove("sel");});el.classList.add("sel");}
+function selEntrega(e,el){pagoActual.entrega=e;document.querySelectorAll("#deliveryMethods .pay-chip").forEach(function(b){b.classList.remove("sel2");});el.classList.add("sel2");document.getElementById("envioForm").style.display=e==="Entrega a domicilio"?"block":"none";document.getElementById("recogerInfo").style.display=e==="Recoger en tienda"?"block":"none";}
+function openPayModal(){var cart=getMyCart();if(!cart.length)return toast("Tu bolsa está vacía");var total=cart.reduce(function(s,x){var p=products.find(function(y){return y.id===x.id;});return s+(p?p.price*x.qty:0);},0);document.getElementById("payTotal").textContent="$"+total.toFixed(2);document.getElementById("payResumen").textContent=cart.length+" productos";if(user){if(!document.getElementById("shipNombre").value)document.getElementById("shipNombre").value=user.name||"";if(!document.getElementById("shipTel").value)document.getElementById("shipTel").value=user.phone||"";}document.getElementById("payModal").classList.add("show");}
+function closePayModal(){document.getElementById("payModal").classList.remove("show");}
+function confirmarPago(){var nombre=document.getElementById("shipNombre").value.trim();var calle=document.getElementById("shipCalle").value.trim();var colonia=document.getElementById("shipColonia").value.trim();var ref=document.getElementById("shipRef").value.trim();var tel=document.getElementById("shipTel").value.trim();if(pagoActual.entrega==="Entrega a domicilio"){if(!nombre||!calle||!colonia){toast("Falta tu nombre, calle y colonia para el envío 💗");return;}}pagoActual.datos={nombre:nombre,calle:calle,colonia:colonia,ref:ref,tel:tel};closePayModal();doCheckoutLocal();}
+function checkoutLocal(){openPayModal();}
+function doCheckoutLocal(){var cart=getMyCart();if(!cart.length)return;var total=cart.reduce(function(s,x){var p=products.find(function(y){return y.id===x.id;});return s+(p?p.price*x.qty:0);},0);saveOrder(total);setMyCart([]);updateCartUI();closeCart();toast("Pedido guardado 💗");}
+function saveOrder(total){if(!user||!user.id)return;if(!ordersByProfile[user.id])ordersByProfile[user.id]=[];var cart=getMyCart();cart.forEach(function(it){var prod=products.find(function(x){return x.id===it.id;});if(prod)setStock(it.id,getStock(prod)-it.qty);});var envioResumen=pagoActual.metodo+" • "+pagoActual.entrega+(pagoActual.entrega==="Entrega a domicilio"&&pagoActual.datos?" • "+pagoActual.datos.calle+", "+pagoActual.datos.colonia+" • Ref: "+(pagoActual.datos.ref||""):"");ordersByProfile[user.id].unshift({date:new Date().toLocaleString("es-MX"),total:total.toFixed(2),items:cart.map(function(it){var p=products.find(function(x){return x.id===it.id;});return it.qty+" x "+(p?p.name:"");}).join(", "),itemsRaw:cart.map(function(it){return{id:it.id,qty:it.qty};}),pago:pagoActual.metodo,entrega:pagoActual.entrega,envio:envioResumen});save();renderOrders();updateWelcome();updateCounts();applyFilters();}
+function cancelarPedido(idx){if(!user||!user.id)return;var pedidos=ordersByProfile[user.id];var o=pedidos[idx];if(!o)return;if(!confirm("¿Cancelar este pedido? Se va a borrar y te regresa el stock 💗"))return;(o.itemsRaw||[]).forEach(function(it){var prod=products.find(function(x){return x.id===it.id;});if(prod)setStock(it.id,getStock(prod)+it.qty);});pedidos.splice(idx,1);save();renderOrders();updateCounts();applyFilters();toast("Pedido cancelado y borrado 💗");}
+function renderOrders(){var el=document.getElementById("orders");var owner=document.getElementById("ordersOwner");if(owner)owner.textContent=user?"• de "+user.name:"• sin perfil";if(!el)return;var my=getMyOrders();if(!my.length){el.textContent=user?"Aún no tienes pedidos, "+user.name+" 💗":"Entra a tu perfil para ver tus pedidos.";return;}el.innerHTML=my.map(function(o,idx){return '<div style="padding:8px 0;border-bottom:1px solid #F0E9E9"><b>'+o.date+'</b> - $'+o.total+'<br><span style="color:#999">'+o.items+'</span><br><span style="color:#2A9D5C;font-weight:700">💳 '+(o.pago||"")+' • 🚚 '+(o.entrega||"")+'</span><br><span style="color:#999;font-size:11px">'+(o.envio||"")+'</span><br><button onclick="cancelarPedido('+idx+')" style="border:none;background:#FFF0F3;color:#C22;padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:800;margin-top:6px">↩️ Cancelar pedido</button></div>';}).join("");}
+function applyFilters(){if(!currentBrand){updateCounts();return;}var q=(document.getElementById("brandSearch").value||"").toLowerCase().trim();var list=products.filter(function(p){if(p.brand!==currentBrand)return false;if(brandCat!=="Todos"&&p.category!==brandCat)return false;if(brandCat==="Maquillaje"&&brandSub!=="Todos"&&p.sub!==brandSub)return false;return !q||(p.name+" "+p.brand+" "+p.description+" "+(p.sub||"")).toLowerCase().includes(q);});document.getElementById("productsTitle").textContent=brandCat==="Todos"?"Todos los productos • "+currentBrand+" ("+list.length+")":brandCat+" • "+currentBrand+" ("+list.length+")";renderProducts(list);}
+function cardHTML(p){var disp=getDisponible(p);var agotado=disp<=0;var oferta=p.oldPrice?'<span class="badge-offer">-'+Math.round((1-p.price/p.oldPrice)*100)+'% OFF</span>':'';var subTag=p.sub?'<span class="badge-sub">'+p.sub+'</span>':'';var fav=favorites.includes(p.id)?'selected':'';var estrella=favorites.includes(p.id)?'★':'☆';var viejo=p.oldPrice?'<span class="old">$'+p.oldPrice+'</span>':'';var borrar=customProducts.some(function(x){return x.id===p.id;})?'<button class="delete-button" onclick="deleteProduct('+p.id+')">Eliminar</button>':'';var stockTexto=agotado?'<p style="font-size:12px;color:#FF4757;font-weight:800;margin:6px 0">❌ Agotado</p>':disp<=3?'<p style="font-size:12px;color:#FF6B00;font-weight:800;margin:6px 0">⚠️ ¡Solo quedan '+disp+'!</p>':'<p style="font-size:12px;color:#2A9D5C;font-weight:700;margin:6px 0">✅ Disponibles: '+disp+'</p>';var btnAgregar=agotado?'<button class="add-cart" disabled style="background:#ccc">Agotado</button>':'<button class="add-cart" onclick="addCart('+p.id+', event)">Agregar 🛍️</button>';return '<div class="product">'+oferta+subTag+'<button class="favorite '+fav+'" onclick="toggleFavorite('+p.id+')">'+estrella+'</button><div class="product-image"><img src="'+p.image+'"></div><h3>'+p.name+'</h3><p class="desc">'+p.brand+' • '+p.description+'</p>'+stockTexto+'<div class="price-row"><span class="price">$'+p.price+'</span>'+viejo+'</div>'+btnAgregar+borrar+'</div>';}
+function renderProducts(list){var el=document.getElementById("products");if(!list.length){el.innerHTML='<p class="empty">No hay productos en este apartado 💗</p>';return;}el.innerHTML=list.map(cardHTML).join("");}
+function toggleFavorite(id){if(favorites.includes(id))favorites=favorites.filter(function(x){return x!==id;});else favorites.push(id);save();applyFilters();updateWelcome();}
+function showFavorites(){if(!currentBrand){toast("Entra a una marca para ver favoritos 💗");return;}var list=products.filter(function(p){return p.brand===currentBrand&&favorites.includes(p.id);});document.getElementById("productsTitle").textContent="⭐ Mis favoritos • "+currentBrand;renderProducts(list);}
+function addCart(id,ev){if(!user){toast("Primero entra a tu perfil 💗");irAperfiles();var p=document.getElementById("portada");p.classList.remove("hidden");p.style.display="flex";return;}var prod=products.find(function(x){return x.id===id;});if(!prod)return;var disp=getDisponible(prod);if(disp<=0){toast("Ya no quedan más 🥺");return;}var btn=ev&&ev.currentTarget?ev.currentTarget:null;flyToBag(prod.image,btn);var cart=getMyCart();var enBolsa=cart.find(function(x){return x.id===id;});if(enBolsa){enBolsa.qty++;}else cart.push({id:id,qty:1});setMyCart(cart);updateCartUI();applyFilters();toast("Agregado 💗 Quedan "+(disp-1));}
+function deleteProduct(id){if(!confirm("¿Eliminar este producto?"))return;customProducts=customProducts.filter(function(x){return x.id!==id;});products=initialProducts.concat(customProducts);delete stockMap[id];save();updateCounts();applyFilters();toast("Producto eliminado");}
+function updateCartUI(){var cart=getMyCart();var totalQty=cart.reduce(function(s,x){return s+x.qty;},0);var total=cart.reduce(function(s,x){var p=products.find(function(y){return y.id===x.id;});return s+(p?p.price*x.qty:0);},0);["cartCount","cartCountBrand","cartCountProfile","cartCountContact"].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=totalQty;});var itemsEl=document.getElementById("cartItems");if(!itemsEl)return;if(!cart.length){itemsEl.innerHTML='<p style="text-align:center;color:#999;padding:20px">Tu bolsa está vacía 💗</p>';}else{itemsEl.innerHTML=cart.map(function(it){var p=products.find(function(x){return x.id===it.id;});if(!p)return "";return '<div class="cart-item"><img src="'+p.image+'"><div style="flex:1"><b style="font-size:13px">'+p.name+'</b><br><span style="font-size:12px;color:#999">$'+p.price+'</span><div class="qty"><button onclick="changeQty('+it.id+',-1)">-</button><span>'+it.qty+'</span><button onclick="changeQty('+it.id+',1)">+</button><button onclick="removeFromCart('+it.id+')" style="border:none;background:none;color:#C22;cursor:pointer;margin-left:6px">🗑️</button></div></div></div>';}).join("");}document.getElementById("cartTotal").textContent="$"+total.toFixed(2);}
+function changeQty(id,d){var cart=getMyCart();var it=cart.find(function(x){return x.id===id;});if(!it)return;var prod=products.find(function(x){return x.id===id;});if(d>0&&getDisponible(prod)<=0)return toast("Ya no quedan más 🥺");it.qty+=d;if(it.qty<=0)cart=cart.filter(function(x){return x.id!==id;});setMyCart(cart);updateCartUI();applyFilters();}
+function removeFromCart(id){setMyCart(getMyCart().filter(function(x){return x.id!==id;}));updateCartUI();applyFilters();}
+function openCart(){document.getElementById("drawer").classList.add("open");document.getElementById("overlay").classList.add("show");updateCartUI();renderOrders();}
+function closeCart(){document.getElementById("drawer").classList.remove("open");document.getElementById("overlay").classList.remove("show");}
+function setNav(el){document.querySelectorAll(".nav-item").forEach(function(b){b.classList.remove("active");});el.classList.add("active");}
+function focusSearch(){window.scrollTo({top:0,behavior:"smooth"});setTimeout(function(){document.getElementById("search").focus();},300);}
+document.getElementById("image").addEventListener("change",function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){var pv=document.getElementById("preview");pv.src=ev.target.result;pv.style.display="block";};r.readAsDataURL(f);});
+document.getElementById("productForm").addEventListener("submit",function(e){e.preventDefault();var name=document.getElementById("name").value.trim();var desc=document.getElementById("description").value.trim();var price=parseFloat(document.getElementById("price").value);var oldPrice=parseFloat(document.getElementById("oldPrice").value)||0;var brand=document.getElementById("brandSelect").value||document.getElementById("brand").value.trim()||"Yuya";var cat=document.getElementById("category").value;var sub=document.getElementById("subSelect").value||(cat==="Perfumes"?"Perfumes":cat==="Skincare"?"Cara":"Labiales");var stock=parseInt(document.getElementById("stockInput").value)||10;var img=document.getElementById("preview").src;if(!name||!price||!img){toast("Falta nombre, precio o foto 💗");return;}var np={id:Date.now(),name:name,brand:brand,description:desc,price:price,oldPrice:oldPrice||undefined,category:cat,sub:sub,stock:stock,image:img};customProducts.push(np);products.push(np);setStock(np.id,stock);save();updateCounts();if(currentBrand===brand)applyFilters();closeAddModal();e.target.reset();document.getElementById("preview").style.display="none";toast("Producto agregado 💗");});
+updateCounts();renderOrders();updateCartUI();if(user)updateWelcome();
+</script>
+  <!-- CONEXIÓN FIREBASE GLOWLAB - NO BORRAR -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAnfwixu_PdZLjVBjC4q9uJtCQl12ZqzIQ",
+    authDomain: "glowlab-da695.firebaseapp.com",
+    databaseURL: "https://glowlab-da695-default-rtdb.firebaseio.com",
+    projectId: "glowlab-da695",
+    storageBucket: "glowlab-da695.firebasestorage.app",
+    messagingSenderId: "1010660618879",
+    appId: "1:1010660618879:web:bcf419937e87d3cb08854a",
+    measurementId: "G-WV4TQMXNGK"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  db.ref('productos').on('value', (snapshot) => {
+    console.log('Productos en vivo:', snapshot.val());
+  });
 </script>
 </body>
 </html>
