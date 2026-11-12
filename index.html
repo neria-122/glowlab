@@ -339,6 +339,9 @@ updateCounts();renderOrders();updateCartUI();if(user)updateWelcome();
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
   const firebaseConfig = {
     apiKey: "AIzaSyAnfwixu_PdZLjVBjC4q9uJtCQl12ZqzIQ",
     authDomain: "glowlab-da695.firebaseapp.com",
@@ -352,12 +355,18 @@ updateCounts();renderOrders();updateCartUI();if(user)updateWelcome();
   if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
+  function refrescarTiendaEnVivo(){
+    if (typeof applyFilters === 'function') applyFilters();
+    if (typeof renderProducts === 'function') renderProducts();
+    if (typeof renderTienda === 'function') renderTienda();
+    if (typeof updateCounts === 'function') updateCounts();
+  }
+
   db.ref('stock').on('value', (snap) => {
     const nube = snap.val();
     if (nube) {
       stockMap = nube;
-      if (typeof applyFilters === 'function') applyFilters();
-      if (typeof updateCounts === 'function') updateCounts();
+      refrescarTiendaEnVivo();
     } else {
       let inicial = {};
       initialProducts.forEach(p => { inicial[p.id] = p.stock || 10; });
