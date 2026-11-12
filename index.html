@@ -257,7 +257,7 @@ let ordersByProfile=leerLS("glow_orders_by_profile",{}),cartByProfile=leerLS("gl
 function getStock(p){if(!p)return 0;if(stockMap[p.id]!==undefined)return stockMap[p.id];if(p.stock!==undefined)return p.stock;return 10;}
 function setStock(id,c){stockMap[id]=Math.max(0,c);try{localStorage.setItem("glow_stock",JSON.stringify(stockMap));}catch(e){}}
 function getQtyInCart(id){var c=getMyCart();var it=c.find(function(x){return x.id===id;});return it?it.qty:0;}
-function getDisponible(p){return Math.max(0,getStock(p)-getQtyInCart(p.id));}
+function getDisponible(p){return getStock(p);}
 function getMyOrders(){if(!user||!user.id)return [];return ordersByProfile[user.id]||[];}
 function getMyCart(){if(!user||!user.id)return [];return cartByProfile[user.id]||[];}
 function setMyCart(n){if(!user||!user.id)return;cartByProfile[user.id]=n;save();}
@@ -336,6 +336,9 @@ updateCounts();renderOrders();updateCartUI();if(user)updateWelcome();
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
   const firebaseConfig = {
     apiKey: "AIzaSyAnfwixu_PdZLjVBjC4q9uJtCQl12ZqzIQ",
     authDomain: "glowlab-da695.firebaseapp.com",
@@ -346,48 +349,26 @@ updateCounts();renderOrders();updateCartUI();if(user)updateWelcome();
     appId: "1:1010660618879:web:bcf419937e87d3cb08854a",
     measurementId: "G-WV4TQMXNGK"
   };
-  firebase.initializeApp(firebaseConfig);
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
-  // 1. Cuando Firebase cambia, cambiamos la tienda en todos los celulares
-  db.ref('stock').on('value', (snapshot) => {
-    const nube = snapshot.val();
+  db.ref('stock').on('value', (snap) => {
+    const nube = snap.val();
     if (nube) {
-      // Copiamos el stock de la nube a la tienda
       stockMap = nube;
-      try{ localStorage.setItem("glow_stock", JSON.stringify(stockMap)); }catch(e){}
-      // Volvemos a dibujar los productos para que salga AGOTADO
       if (typeof applyFilters === 'function') applyFilters();
       if (typeof updateCounts === 'function') updateCounts();
-      if (typeof updateCartUI === 'function') updateCartUI();
-      console.log('Stock en vivo:', nube);
     } else {
-      // Primera vez: subimos tu stock inicial (10 de cada uno)
       let inicial = {};
       initialProducts.forEach(p => { inicial[p.id] = p.stock || 10; });
       db.ref('stock').set(inicial);
     }
   });
 
-  // 2. Cuando TU cambias el stock en tu tienda, lo subimos a la nube
-  const setStockOriginal = setStock;
   window.setStock = function(id, cantidad){
     cantidad = Math.max(0, cantidad);
     stockMap[id] = cantidad;
-    try{ localStorage.setItem("glow_stock", JSON.stringify(stockMap)); }catch(e){}
     db.ref('stock/' + id).set(cantidad);
-  };
-
-  // 3. Cuando alguien CONFIRMA un pago, restamos en la nube para todos
-  const confirmarOriginal = window.confirmarPago;
-  // Lo guardamos para usarlo después de que se haga el pedido
-  window.restarStockEnNube = function(carrito){
-    carrito.forEach(item => {
-      db.ref('stock/' + item.id).transaction((actual) => {
-        if (actual === null) return 0;
-        return Math.max(0, actual - item.qty);
-      });
-    });
   };
 </script>
 </body>
